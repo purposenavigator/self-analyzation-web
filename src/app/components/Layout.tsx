@@ -8,11 +8,11 @@ import useStoreQuestion from '../hooks/useStoreQuestion';
 const Layout = () => {
 
     const { questions, loading, error } = useFetchQuestions();
-    const { storeQuestionId } = useStoreQuestion(questions);
+    const { storeQuestionId, question } = useStoreQuestion(questions);
   return (
     <div className="flex">
       <Sidebar handleClick={storeQuestionId} questions={questions}/>
-      <MainContent />
+      <MainContent question={question}/>
     </div>
   );
 };

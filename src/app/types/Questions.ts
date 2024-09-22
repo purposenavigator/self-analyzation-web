@@ -8,3 +8,7 @@ type Question = {
     title: string;
     explanation: string;
 }
+
+interface MainContentProps {  
+    question: Question | undefined;
+    }

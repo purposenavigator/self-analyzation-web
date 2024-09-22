@@ -1,3 +1,5 @@
+
+'use client'; // This marks the component as a Client Component
 import Layout from "./components/Layout";
 
 export default function Home() {

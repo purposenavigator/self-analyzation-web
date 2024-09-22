@@ -2,8 +2,6 @@
 
 import React from 'react';
 
-
-
 const Sidebar = ({ handleClick, questions }: SidebarProps) => {
   return (
     <aside className="flex-1 bg-gray-100 h-screen p-5">

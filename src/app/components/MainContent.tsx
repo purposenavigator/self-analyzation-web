@@ -1,11 +1,23 @@
-import React from 'react';
 
-const MainContent = () => {
+'use client'; // This marks the component as a Client Component
+import { useRouter } from 'next/router';
+import React from 'react';
+import StartConversationButton from './StartConversationButton';
+
+const MainContent = ({question}: MainContentProps) => {
+  
+
   return (
-    <main className="flex-8 p-10">
-      <h1 className="text-4xl font-bold mb-4">Question Title</h1>
-      <p className="text-lg mb-6">Question Explanation</p>
-      <button className="bg-black text-white py-2 px-4 rounded">Start Conversation</button>
+    <main className="flex-shrink-0 w-auto p-10">
+      {question ? (
+        <div>
+          <h1 className="text-4xl font-bold mb-4">{question.title}</h1>
+          <p className="text-lg mb-6">{question.explanation}</p>
+          <StartConversationButton question={question}/>
+        </div>
+      ) : (
+        <h1 className="text-4xl font-bold mb-4">No question selected</h1>
+      )}
     </main>
   );
 };
