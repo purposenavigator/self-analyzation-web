@@ -1,7 +1,6 @@
 
-import Layout from "../components/Layout";
 
-export default function Home() {
+export default function Conversation() {
   return (
     <>
       <div className="h-screen flex flex-col">
@@ -21,7 +20,6 @@ export default function Home() {
           </div>
         </header>
         <div className="flex flex-1">
-          <Layout />
         </div>
         <footer className="text-center text-gray-500 py-6">
           Copyright © 2023 Question Selection App
@@ -30,3 +28,4 @@ export default function Home() {
     </>
   );
 };
+

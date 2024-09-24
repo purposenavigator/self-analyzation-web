@@ -1,6 +1,4 @@
 
-'use client'; // This marks the component as a Client Component
-import { useRouter } from 'next/router';
 import React from 'react';
 import StartConversationButton from './StartConversationButton';
 
