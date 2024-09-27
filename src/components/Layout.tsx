@@ -6,13 +6,12 @@ import useFetchQuestions from '../hooks/useFetchQuestions';
 import useStoreQuestion from '../hooks/useStoreQuestion';
 
 const Layout = () => {
-
-    const { questions, loading, error } = useFetchQuestions();
-    const { storeQuestionId, question } = useStoreQuestion(questions);
+  const { questions, loading, error } = useFetchQuestions();
+  const { storeQuestionId, question } = useStoreQuestion(questions);
   return (
     <div className="flex">
-      <Sidebar handleClick={storeQuestionId} questions={questions}/>
-      <MainContent question={question}/>
+      <Sidebar handleClick={storeQuestionId} questions={questions} />
+      <MainContent question={question} />
     </div>
   );
 };

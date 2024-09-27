@@ -4,11 +4,11 @@ interface SidebarProps {
 }
 
 type Question = {
-    id: number;
-    title: string;
-    explanation: string;
-}
+  id: number;
+  title: string;
+  explanation: string;
+};
 
-interface MainContentProps {  
-    question: Question | undefined;
-    }
+interface MainContentProps {
+  question: Question | undefined;
+}

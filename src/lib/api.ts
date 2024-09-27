@@ -9,8 +9,10 @@ interface APIError extends Error {
   status?: number;
 }
 
-
-async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
+async function apiRequest<T>(
+  path: string,
+  options: RequestOptions = {},
+): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
     ...options,
     headers: {
@@ -29,15 +31,21 @@ async function apiRequest<T>(path: string, options: RequestOptions = {}): Promis
   return res.json();
 }
 
-export const getData = <T>(path: string, options: RequestOptions = {}): Promise<T> => {
+export const getData = <T>(
+  path: string,
+  options: RequestOptions = {},
+): Promise<T> => {
   return apiRequest<T>(path, { method: 'GET', ...options });
 };
 
-export const postData = <T>(path: string, data: any, options: RequestOptions = {}): Promise<T> => {
+export const postData = <T>(
+  path: string,
+  data: any,
+  options: RequestOptions = {},
+): Promise<T> => {
   return apiRequest<T>(path, {
     method: 'POST',
     body: JSON.stringify(data),
     ...options,
   });
 };
-

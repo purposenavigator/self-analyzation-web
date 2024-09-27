@@ -1,3 +1,20 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": [
+    "next/core-web-vitals", // Next.js Core Web Vitals rules
+    "next/typescript", // Next.js TypeScript rules
+    "eslint:recommended", // Recommended ESLint rules
+    "plugin:@typescript-eslint/recommended", // TypeScript ESLint rules
+    "plugin:react/recommended", // React recommended rules
+    "plugin:react-hooks/recommended", // React Hooks recommended rules
+    "plugin:prettier/recommended" // Prettier integration
+  ],
+  "plugins": [
+    "@typescript-eslint", // TypeScript ESLint plugin
+    "react", // React plugin
+    "react-hooks", // React Hooks plugin
+    "prettier" // Prettier plugin
+  ],
+  "rules": {
+    "prettier/prettier": "error" // Display Prettier errors as ESLint errors
+  }
 }
