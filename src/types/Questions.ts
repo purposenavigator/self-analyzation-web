@@ -12,3 +12,7 @@ type Question = {
 interface MainContentProps {
   question: Question | undefined;
 }
+
+interface HeaderFooterProps {
+  children: React.ReactNode;
+}
