@@ -3,7 +3,7 @@ interface SidebarProps {
   questions: Question[];
 }
 
-type Question = {
+type Question = { [k: string]: string | number } & {
   id: number;
   title: string;
   explanation: string;
