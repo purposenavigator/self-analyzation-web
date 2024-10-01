@@ -2,8 +2,8 @@
 import React from 'react';
 import Sidebar from './Sidebar';
 import MainContent from './MainContent';
-import useFetchQuestions from '../hooks/useFetchQuestions';
-import useStoreQuestion from '../hooks/useStoreQuestion';
+import useFetchQuestions from '../../hooks/useFetchQuestions';
+import useStoreQuestion from '../../hooks/useStoreQuestion';
 
 const Body = () => {
   const { questions, loading, error } = useFetchQuestions();

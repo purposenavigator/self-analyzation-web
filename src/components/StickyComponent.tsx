@@ -32,7 +32,7 @@ const StickyComponent = ({
 
   return (
     <div
-      className={`transition-all duration-300 ease-in-out ${
+      className={`transition-all duration-300 ease-in-out border ${
         isSticky
           ? 'fixed top-0 left-0 w-full bg-white shadow-md z-50'
           : 'relative w-full'

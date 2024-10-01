@@ -1,5 +1,5 @@
 import HeaderFooter from '@/components/HeaderFooter';
-import Body from '../components/Body';
+import Body from '../components/Questions/Body';
 
 export default function Home() {
   return (
