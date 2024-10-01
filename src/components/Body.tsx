@@ -5,7 +5,7 @@ import MainContent from './MainContent';
 import useFetchQuestions from '../hooks/useFetchQuestions';
 import useStoreQuestion from '../hooks/useStoreQuestion';
 
-const Layout = () => {
+const Body = () => {
   const { questions, loading, error } = useFetchQuestions();
   const { storeQuestionId, question } = useStoreQuestion(questions);
   return (
@@ -16,4 +16,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default Body;
