@@ -4,12 +4,14 @@ import React from 'react';
 interface DynamicTextAreaProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   textareaRef: React.RefObject<HTMLTextAreaElement>;
 }
 
 const DynamicTextArea = ({
   value,
   onChange,
+  onKeyDown,
   textareaRef,
 }: DynamicTextAreaProps) => {
   return (
@@ -20,6 +22,7 @@ const DynamicTextArea = ({
         rows={1}
         value={value}
         onChange={onChange}
+        onKeyDown={onKeyDown}
         placeholder="Type here..."
         style={{ height: 'auto' }}
       />
