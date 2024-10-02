@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import StickyComponent from '@/components/StickyComponent';
 import useDynamicTextArea from '@/hooks/Conversaton/useDynamicTextArea';
 import useReceiveQuestionByRoute from '@/hooks/useReceiveQuestionByRoute';
+import { postData } from '@/lib/api';
 import { useState } from 'react';
 
 const MAX_TOKENS = 150; // Constant value for max_tokens
@@ -14,6 +15,13 @@ interface Payload {
   prompt: string;
   max_tokens: number;
   conversation_id?: string; // Optional field
+}
+
+interface ResponseObject {
+  summary_response: string;
+  question_response: string;
+  analyze_response: string;
+  conversation_id: string;
 }
 
 function createPayload(
@@ -37,24 +45,13 @@ function createPayload(
 }
 
 async function submitText(payload: Payload, resetText: () => void) {
-  try {
-    const response = await fetch('/conversation', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
+  const response = postData<ResponseObject>('/conversation', payload)
+    .then((res) => {
+      console.log(res.conversation_id);
+    })
+    .catch((error) => {
+      console.error('Error occurred while sending message:', error);
     });
-
-    if (response.ok) {
-      console.log('Message sent successfully');
-      resetText(); // Optionally reset the text area after submission
-    } else {
-      console.error('Failed to send message');
-    }
-  } catch (error) {
-    console.error('Error occurred while sending message:', error);
-  }
 }
 
 function Conversation() {
@@ -64,6 +61,7 @@ function Conversation() {
 
   if (!params) return null;
   const { title, explanation, id } = params;
+  const resetText = () => setInputValue('');
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(e.target.value);
@@ -73,7 +71,7 @@ function Conversation() {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault(); // Prevents new line in the TextArea
       const payload = createPayload(1, title, inputValue);
-      console.log('Payload:', payload);
+      submitText(payload, resetText);
     }
   };
 
