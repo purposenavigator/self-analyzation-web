@@ -44,20 +44,24 @@ function createPayload(
   return payload;
 }
 
-async function submitText(payload: Payload, resetText: () => void) {
-  const response = postData<ResponseObject>('/conversation', payload)
-    .then((res) => {
-      console.log(res.conversation_id);
-    })
-    .catch((error) => {
-      console.error('Error occurred while sending message:', error);
-    });
+async function submitText(
+  payload: Payload,
+  resetText: () => void,
+): Promise<ResponseObject | void> {
+  try {
+    const result = await postData<ResponseObject>('/conversation', payload);
+    resetText();
+    return result;
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 function Conversation() {
   const { params } = useReceiveQuestionByRoute();
   const [inputValue, setInputValue] = useState<string>('');
   const textareaRef = useDynamicTextArea({ value: inputValue });
+  const [conversationId, setConversationId] = useState<string | undefined>();
 
   if (!params) return null;
   const { title, explanation, id } = params;
@@ -69,10 +73,12 @@ function Conversation() {
 
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault(); // Prevents new line in the TextArea
-      const payload = createPayload(1, title, inputValue);
-      submitText(payload, resetText);
-    }
+      e.preventDefault();
+      const payload = createPayload(1, title, inputValue, conversationId);
+      const result = await submitText(payload, resetText);
+      if(result) {
+        setConversationId(result.conversation_id);
+      }
   };
 
   return (
