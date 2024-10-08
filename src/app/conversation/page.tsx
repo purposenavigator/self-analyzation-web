@@ -1,5 +1,6 @@
 'use client';
 import DynamicTextArea from '@/components/Coinversation/DynamicTextArea';
+import ScrollableComponent from '@/components/Coinversation/ScrollableComponent';
 import Header from '@/components/Header';
 import StickyComponent from '@/components/StickyComponent';
 import useDynamicTextArea from '@/hooks/Conversaton/useDynamicTextArea';
@@ -8,21 +9,6 @@ import { postData } from '@/lib/api';
 import { useState } from 'react';
 
 const MAX_TOKENS = 150; // Constant value for max_tokens
-
-interface Payload {
-  user_id: number;
-  topic: string;
-  prompt: string;
-  max_tokens: number;
-  conversation_id?: string; // Optional field
-}
-
-interface ResponseObject {
-  summary_response: string;
-  question_response: string;
-  analyze_response: string;
-  conversation_id: string;
-}
 
 function createPayload(
   user_id: number,
@@ -62,6 +48,7 @@ function Conversation() {
   const [inputValue, setInputValue] = useState<string>('');
   const textareaRef = useDynamicTextArea({ value: inputValue });
   const [conversationId, setConversationId] = useState<string | undefined>();
+  const [responseBodies, setResponseBodies] = useState<ResponseBody[]>([]);
 
   if (!params) return null;
   const { title, explanation, id } = params;
@@ -76,9 +63,18 @@ function Conversation() {
       e.preventDefault();
       const payload = createPayload(1, title, inputValue, conversationId);
       const result = await submitText(payload, resetText);
-      if(result) {
+      if (result) {
         setConversationId(result.conversation_id);
+        setResponseBodies([
+          ...responseBodies,
+          {
+            summary_response: result.summary_response,
+            question_response: result.question_response,
+            analyze_response: result.analyze_response,
+          },
+        ]);
       }
+    }
   };
 
   return (
@@ -92,6 +88,7 @@ function Conversation() {
             questionId={id}
           />
         </div>
+        <ScrollableComponent data={responseBodies} />
         <div className="flex justify-center fixed bottom-0 left-0 right-0 mb-4">
           <DynamicTextArea
             textareaRef={textareaRef}
