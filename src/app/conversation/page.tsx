@@ -71,6 +71,7 @@ function Conversation() {
             summary_response: result.summary_response,
             question_response: result.question_response,
             analyze_response: result.analyze_response,
+            user_prompt: result.user_prompt,
           },
         ]);
       }

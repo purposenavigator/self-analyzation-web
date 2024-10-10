@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Response from './Response';
+import UserPromptAndResponse from './UserPromptAndResponse';
 
 interface ScrollableComponentProps {
   data: ResponseBody[];
@@ -16,7 +16,7 @@ const ScrollableComponent = ({ data }: ScrollableComponentProps) => {
         }}
       >
         {data.map((item, index) => (
-          <Response key={index} item={item} />
+          <UserPromptAndResponse key={index} item={item} />
         ))}
       </div>
     </div>
