@@ -1,5 +1,6 @@
 'use client'; // This marks the component as a Client Component
 
+import { Question, SidebarProps } from '@/types/Questions';
 import React from 'react';
 
 const Sidebar = ({ handleClick, questions }: SidebarProps) => {

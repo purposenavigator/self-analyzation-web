@@ -6,7 +6,8 @@ import StickyComponent from '@/components/StickyComponent';
 import useDynamicTextArea from '@/hooks/Conversaton/useDynamicTextArea';
 import useReceiveQuestionByRoute from '@/hooks/useReceiveQuestionByRoute';
 import { postData } from '@/lib/api';
-import { useState } from 'react';
+import { Payload, ResponseBody, ResponseObject } from '@/types/Questions';
+import React, { useState } from 'react';
 
 const MAX_TOKENS = 150; // Constant value for max_tokens
 

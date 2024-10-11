@@ -1,5 +1,7 @@
+import { HeaderFooterProps } from '@/types/Questions';
 import Footer from './Footer';
 import Header from './Header';
+import React from 'react';
 
 function HeaderFooter({ children }: HeaderFooterProps) {
   return (

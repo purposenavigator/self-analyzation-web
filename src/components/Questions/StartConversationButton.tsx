@@ -1,4 +1,6 @@
+import { MainContentProps } from '@/types/Questions';
 import Link from 'next/link';
+import React from 'react';
 
 const StartConversationButton = ({ question }: MainContentProps) => {
   if (!question) return null;

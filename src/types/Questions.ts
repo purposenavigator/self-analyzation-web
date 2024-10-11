@@ -1,23 +1,23 @@
-interface SidebarProps {
+export interface SidebarProps {
   handleClick: (id: number) => void;
   questions: Question[];
 }
 
-type Question = { [k: string]: string | number } & {
+export type Question = { [k: string]: string | number } & {
   id: number;
   title: string;
   explanation: string;
 };
 
-interface MainContentProps {
+export interface MainContentProps {
   question: Question | undefined;
 }
 
-interface HeaderFooterProps {
+export interface HeaderFooterProps {
   children: React.ReactNode;
 }
 
-interface Payload {
+export interface Payload {
   user_id: number;
   topic: string;
   prompt: string;
@@ -25,7 +25,7 @@ interface Payload {
   conversation_id?: string; // Optional field
 }
 
-interface ResponseObject {
+export interface ResponseObject {
   user_prompt: string;
   summary_response: string;
   question_response: string;
@@ -33,7 +33,7 @@ interface ResponseObject {
   conversation_id: string;
 }
 
-type ResponseBody = Pick<
+export type ResponseBody = Pick<
   ResponseObject,
   'summary_response' | 'question_response' | 'analyze_response' | 'user_prompt'
 >;

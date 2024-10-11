@@ -1,3 +1,4 @@
+import { Question } from '@/types/Questions';
 import { useEffect, useState } from 'react';
 
 const useStoreQuestion = (questions: Question[]) => {

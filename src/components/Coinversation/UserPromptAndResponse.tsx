@@ -1,3 +1,6 @@
+import { ResponseBody } from '@/types/Questions';
+import React from 'react';
+
 interface ResponseProps {
   item: ResponseBody;
 }
@@ -5,15 +8,15 @@ interface ResponseProps {
 const UserPromptAndResponse = ({ item }: ResponseProps) => {
   return (
     <div className="mx-12 mt-12 mb-24">
-      <text className="block mb-8 text-xl border py-8 px-4 w-1/2 ml-auto bg-gray-200 rounded-md">
+      <p className="block mb-8 text-xl border py-8 px-4 w-1/2 ml-auto bg-gray-200 rounded-md">
         {item.user_prompt}
-      </text>
+      </p>
 
       <div className="mb-2 text-lg font-semibold">Summary</div>
-      <text className="block mb-4 text-xl">{item.summary_response}</text>
+      <p className="block mb-4 text-xl">{item.summary_response}</p>
 
       <div className="mb-2 text-lg font-semibold">Question</div>
-      <text className="block mb-4 text-xl">{item.question_response}</text>
+      <p className="block mb-4 text-xl">{item.question_response}</p>
 
       <div className="mb-2 text-lg font-semibold">Analysis</div>
       <div

@@ -1,4 +1,5 @@
 import { getData } from '@/lib/api';
+import { Question } from '@/types/Questions';
 import { useEffect, useState } from 'react';
 
 const useFetchQuestions = () => {

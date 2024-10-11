@@ -1,3 +1,4 @@
+import React from 'react';
 const Header = () => {
   return (
     <header className="bg-white shadow-sm py-4 px-6 flex justify-between">

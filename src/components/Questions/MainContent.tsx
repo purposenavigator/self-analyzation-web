@@ -1,5 +1,6 @@
 import React from 'react';
 import StartConversationButton from './StartConversationButton';
+import { MainContentProps } from '@/types/Questions';
 
 const MainContent = ({ question }: MainContentProps) => {
   return (

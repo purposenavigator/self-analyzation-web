@@ -1,5 +1,5 @@
 'use client'; // Mark the component as a Client Component
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface StickyComponentProps {
   title: string;
