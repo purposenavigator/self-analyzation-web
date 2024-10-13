@@ -6,7 +6,7 @@ import StickyComponent from '@/components/StickyComponent';
 import useDynamicTextArea from '@/hooks/Conversaton/useDynamicTextArea';
 import { useSubmitText } from '@/hooks/Conversaton/useSubmitText';
 import useReceiveQuestionByRoute from '@/hooks/useReceiveQuestionByRoute';
-import { Payload, ResponseBody } from '@/types/Questions';
+import { Payload, ResponseBody } from '@/types/Conversation';
 import React, { useState } from 'react';
 
 const MAX_TOKENS = 150; // Constant value for max_tokens
@@ -31,13 +31,41 @@ function createPayload(
   return payload;
 }
 
+const useManageResponseBodies = () => {
+  const [responseBodies, setResponseBodies] = useState<ResponseBody[]>([]);
+
+  const addUserPrompt = (userPrompt: string) => {
+    const newResponseBody = {
+      user_prompt: userPrompt,
+      summary_response: undefined,
+      question_response: undefined,
+      analyze_response: undefined,
+    };
+    setResponseBodies((prevResponseBodies) => [
+      ...prevResponseBodies,
+      newResponseBody,
+    ]);
+  };
+
+  const replaceLastResponseBody = (updatedResponse: ResponseBody) => {
+    setResponseBodies((prevResponseBodies) => {
+      const newResponseBodies = [...prevResponseBodies];
+      newResponseBodies[newResponseBodies.length - 1] = updatedResponse;
+      return newResponseBodies;
+    });
+  };
+
+  return { responseBodies, addUserPrompt, replaceLastResponseBody };
+};
+
 function Conversation() {
   const { params } = useReceiveQuestionByRoute();
   const [inputValue, setInputValue] = useState<string>('');
   const textareaRef = useDynamicTextArea({ value: inputValue });
   const [conversationId, setConversationId] = useState<string | undefined>();
-  const [responseBodies, setResponseBodies] = useState<ResponseBody[]>([]);
   const { submitText, loading, error } = useSubmitText();
+  const { responseBodies, addUserPrompt, replaceLastResponseBody } =
+    useManageResponseBodies();
 
   if (!params) return null;
   const { title, explanation, id } = params;
@@ -51,18 +79,16 @@ function Conversation() {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       const payload = createPayload(1, title, inputValue, conversationId);
+      addUserPrompt(inputValue);
       const result = await submitText(payload, resetText);
       if (result) {
         setConversationId(result.conversation_id);
-        setResponseBodies([
-          ...responseBodies,
-          {
-            summary_response: result.summary_response,
-            question_response: result.question_response,
-            analyze_response: result.analyze_response,
-            user_prompt: result.user_prompt,
-          },
-        ]);
+        replaceLastResponseBody({
+          summary_response: result.summary_response,
+          question_response: result.question_response,
+          analyze_response: result.analyze_response,
+          user_prompt: result.user_prompt,
+        });
       }
     }
   };

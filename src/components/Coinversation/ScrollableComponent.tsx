@@ -1,6 +1,6 @@
 import React from 'react';
 import UserPromptAndResponse from './UserPromptAndResponse';
-import { ResponseBody } from '@/types/Questions';
+import { ResponseBody } from '@/types/Conversation';
 
 interface ScrollableComponentProps {
   data: ResponseBody[];
