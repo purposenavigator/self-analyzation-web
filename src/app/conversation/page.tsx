@@ -4,9 +4,9 @@ import ScrollableComponent from '@/components/Coinversation/ScrollableComponent'
 import Header from '@/components/Header';
 import StickyComponent from '@/components/StickyComponent';
 import useDynamicTextArea from '@/hooks/Conversaton/useDynamicTextArea';
+import { useSubmitText } from '@/hooks/Conversaton/useSubmitText';
 import useReceiveQuestionByRoute from '@/hooks/useReceiveQuestionByRoute';
-import { postData } from '@/lib/api';
-import { Payload, ResponseBody, ResponseObject } from '@/types/Questions';
+import { Payload, ResponseBody } from '@/types/Questions';
 import React, { useState } from 'react';
 
 const MAX_TOKENS = 150; // Constant value for max_tokens
@@ -31,25 +31,13 @@ function createPayload(
   return payload;
 }
 
-async function submitText(
-  payload: Payload,
-  resetText: () => void,
-): Promise<ResponseObject | void> {
-  try {
-    const result = await postData<ResponseObject>('/conversation', payload);
-    resetText();
-    return result;
-  } catch (e) {
-    console.error(e);
-  }
-}
-
 function Conversation() {
   const { params } = useReceiveQuestionByRoute();
   const [inputValue, setInputValue] = useState<string>('');
   const textareaRef = useDynamicTextArea({ value: inputValue });
   const [conversationId, setConversationId] = useState<string | undefined>();
   const [responseBodies, setResponseBodies] = useState<ResponseBody[]>([]);
+  const { submitText, loading, error } = useSubmitText();
 
   if (!params) return null;
   const { title, explanation, id } = params;
@@ -90,7 +78,11 @@ function Conversation() {
             questionId={id}
           />
         </div>
-        <ScrollableComponent data={responseBodies} />
+        <ScrollableComponent
+          data={responseBodies}
+          loading={loading}
+          error={error}
+        />
         <div className="flex justify-center fixed bottom-0 left-0 right-0 mb-4">
           <DynamicTextArea
             textareaRef={textareaRef}

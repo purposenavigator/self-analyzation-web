@@ -4,9 +4,18 @@ import { ResponseBody } from '@/types/Questions';
 
 interface ScrollableComponentProps {
   data: ResponseBody[];
+  loading: boolean;
+  error: null | string;
 }
 
-const ScrollableComponent = ({ data }: ScrollableComponentProps) => {
+const ScrollableComponent = ({
+  data,
+  loading,
+  error,
+}: ScrollableComponentProps) => {
+  if (data.length === 0 && !loading) {
+    return null; // Return null to render nothing
+  }
   return (
     <div>
       <div
