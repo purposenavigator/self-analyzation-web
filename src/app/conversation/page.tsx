@@ -94,31 +94,29 @@ function Conversation() {
   };
 
   return (
-    <>
+    <div>
       <Header />
-      <div>
-        <div className="flex justify-center">
-          <StickyComponent
-            title={title}
-            explanation={explanation}
-            questionId={id}
-          />
-        </div>
-        <ScrollableComponent
-          data={responseBodies}
-          loading={loading}
-          error={error}
+      <div className="flex justify-center">
+        <StickyComponent
+          title={title}
+          explanation={explanation}
+          questionId={id}
         />
-        <div className="flex justify-center fixed bottom-0 left-0 right-0 mb-4">
-          <DynamicTextArea
-            textareaRef={textareaRef}
-            value={inputValue}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-          />
-        </div>
       </div>
-    </>
+      <ScrollableComponent
+        data={responseBodies}
+        loading={loading}
+        error={error}
+      />
+      <div className="flex justify-center fixed bottom-0 left-0 right-0 mb-4">
+        <DynamicTextArea
+          textareaRef={textareaRef}
+          value={inputValue}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+        />
+      </div>
+    </div>
   );
 }
 

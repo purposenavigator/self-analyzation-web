@@ -30,6 +30,7 @@ export type ResponseBody = Pick<
 
 export interface UserPromptAndResponseProps {
   item: ResponseBody;
+  isLast: boolean;
 }
 
 export interface UserPromptProps {
@@ -40,4 +41,5 @@ export interface ResponseProps {
   summary: ResponseBody['summary_response'];
   question: ResponseBody['question_response'];
   analysis: ResponseBody['analyze_response'];
+  isLast: boolean;
 }

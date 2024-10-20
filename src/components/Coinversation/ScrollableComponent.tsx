@@ -17,17 +17,23 @@ const ScrollableComponent = ({
     return null; // Return null to render nothing
   }
   return (
-    <div>
+    <div className="pm-20">
       <div
         style={{
-          overflowY: 'scroll', // Make the div scrollable
           border: '1px solid #ccc',
           padding: '10px',
         }}
       >
         {data.map((item, index) => (
-          <UserPromptAndResponse key={index} item={item} />
+          <UserPromptAndResponse
+            key={index}
+            item={item}
+            isLast={!!(data.length - 1 === index)}
+          />
         ))}
+        {error && (
+          <div className="text-red-500 text-xl text-center">{error}</div>
+        )}
       </div>
     </div>
   );
