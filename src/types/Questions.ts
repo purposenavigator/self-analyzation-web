@@ -1,6 +1,6 @@
-export interface SidebarProps {
-  handleClick: (id: number) => void;
-  questions: Question[];
+export interface SidebarProps<T> {
+  renderer: (item: T) => React.ReactNode;
+  items: T[];
 }
 
 export type Question = { [k: string]: string | number } & {
