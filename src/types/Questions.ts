@@ -1,4 +1,5 @@
 export interface SidebarProps<T> {
+  title: string;
   renderer: (item: T) => React.ReactNode;
   items: T[];
 }

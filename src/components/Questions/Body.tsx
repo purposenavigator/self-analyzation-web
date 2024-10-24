@@ -20,7 +20,11 @@ const Body = () => {
   );
   return (
     <div className="flex">
-      <Sidebar items={questions} renderer={renderer} />
+      <Sidebar
+        title={'Pre-Made Questions'}
+        items={questions}
+        renderer={renderer}
+      />
       <MainContent question={question} />
     </div>
   );
