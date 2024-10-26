@@ -15,5 +15,6 @@ export interface MainContentProps {
 }
 
 export interface HeaderFooterProps {
+  title: string;
   children: React.ReactNode;
 }

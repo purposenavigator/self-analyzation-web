@@ -12,17 +12,14 @@ const items = [
 ];
 
 const renderer = (item: { title: string; path: string }) => (
-  <li
-    key={item.path}
-    className="flex items-center w-full cursor-pointer border-4"
-  >
+  <li key={item.path} className="flex items-center w-full cursor-pointer">
     <Link href={{ pathname: `/${item.path}` }}>{item.title}</Link>
   </li>
 );
 
 export default function Home() {
   return (
-    <HeaderFooter>
+    <HeaderFooter title="Home">
       <div className="flex flex-1">
         <Sidebar title={'Discover You'} items={items} renderer={renderer} />
         <MainContent />

@@ -4,7 +4,7 @@ import React from 'react';
 
 export default function Questions() {
   return (
-    <HeaderFooter>
+    <HeaderFooter title="Questions">
       <div className="flex flex-1">
         <Body />
       </div>

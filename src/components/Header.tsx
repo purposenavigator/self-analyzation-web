@@ -1,8 +1,8 @@
 import React from 'react';
-const Header = () => {
+const Header = ({ title }) => {
   return (
     <header className="bg-white shadow-sm py-4 px-6 flex justify-between">
-      <div className="text-lg font-bold">Question Selection</div>
+      <div className="text-lg font-bold">{title}</div>
       <nav className="flex space-x-6">
         <a href="#" className="text-gray-600">
           Select Question
