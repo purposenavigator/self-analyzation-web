@@ -1,6 +1,9 @@
 import { postData } from '@/lib/api';
-import { UseSubmitTextReturn } from '@/types/Conversation';
-import { Payload, ResponseObject } from '@/types/Questions';
+import {
+  Payload,
+  ResponseObject,
+  UseSubmitTextReturn,
+} from '@/types/Conversation';
 import { useState } from 'react';
 
 export function useSubmitText(): UseSubmitTextReturn {
