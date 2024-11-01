@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 interface StickyComponentProps {
   title: string;
   explanation: string;
-  questionId: number;
+  questionId: string;
 }
 
 const StickyComponent = ({

@@ -4,8 +4,8 @@ export interface SidebarProps<T> {
   items: T[];
 }
 
-export type Question = { [k: string]: string | number } & {
-  id: number;
+export type Question = { [k: string]: string } & {
+  question_id: string;
   title: string;
   explanation: string;
 };

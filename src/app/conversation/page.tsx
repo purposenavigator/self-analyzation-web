@@ -15,12 +15,14 @@ function createPayload(
   user_id: number,
   topic: string,
   prompt: string,
+  question_id: string,
   conversation_id?: string,
 ): Payload {
   const payload: Payload = {
     user_id,
     topic,
     prompt,
+    question_id,
     max_tokens: MAX_TOKENS,
   };
 
@@ -68,7 +70,7 @@ function Conversation() {
     useManageResponseBodies();
 
   if (!params) return null;
-  const { title, explanation, id } = params;
+  const { title, explanation, questionId } = params;
   const resetText = () => setInputValue('');
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -78,7 +80,14 @@ function Conversation() {
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      const payload = createPayload(1, title, inputValue, conversationId);
+      const payload = createPayload(
+        1,
+        title,
+        inputValue,
+        questionId,
+        conversationId,
+      );
+      console.log(payload);
       addUserPrompt(inputValue);
       const result = await submitText(payload, resetText);
       if (result) {
@@ -100,7 +109,7 @@ function Conversation() {
         <StickyComponent
           title={title}
           explanation={explanation}
-          questionId={id}
+          questionId={questionId}
         />
       </div>
       <ScrollableComponent

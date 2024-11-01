@@ -10,6 +10,7 @@ export type UseSubmitTextReturn = {
 export interface Payload {
   user_id: number;
   topic: string;
+  question_id: string;
   prompt: string;
   max_tokens: number;
   conversation_id?: string; // Optional field

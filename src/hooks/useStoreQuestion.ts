@@ -3,13 +3,13 @@ import { useEffect, useState } from 'react';
 
 const useStoreQuestion = (questions: Question[]) => {
   const [question, setQuestion] = useState<Question | undefined>(undefined);
-  const [questionId, setQuestionId] = useState<number | undefined>(undefined);
+  const [questionId, setQuestionId] = useState<string | undefined>(undefined);
 
   const storeQuestion = (question: Question) => {
     setQuestion(question);
   };
 
-  const storeQuestionId = (id: number) => {
+  const storeQuestionId = (id: string) => {
     setQuestionId(id);
   };
 
