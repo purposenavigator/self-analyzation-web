@@ -13,6 +13,8 @@ export interface Analysis {
   questions: Message[];
   summaries: Message[];
   user_id: number;
+  topic: string;
+  title: string;
   _id: string;
 }
 
