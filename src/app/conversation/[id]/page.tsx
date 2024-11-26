@@ -9,8 +9,10 @@ import useFetchQuestion from '@/hooks/useFethQuestion';
 import useReceiveQuestionByRoute, {
   isConversation,
 } from '@/hooks/useReceiveQuestionByRoute';
-import { Payload, ResponseBody } from '@/types/Conversation';
-import React, { useState } from 'react';
+import { postData } from '@/lib/api';
+import { Payload, ResponseBody, UserConversation } from '@/types/Conversation';
+import { Question, Conversation } from '@/types/Questions';
+import React, { useState, useCallback, useEffect, use } from 'react';
 
 const MAX_TOKENS = 150; // Constant value for max_tokens
 
@@ -34,8 +36,42 @@ function createPayload(
   return payload;
 }
 
-const useManageResponseBodies = () => {
-  const [responseBodies, setResponseBodies] = useState<ResponseBody[]>([]);
+const convertUserConversationToResponseBodies = (
+  data: UserConversation | null,
+): ResponseBody[] => {
+  if (!data) return [];
+  const summaries = data.summaries.filter(({ role }) => role !== 'system');
+  const questions = data.questions.filter(({ role }) => role !== 'system');
+  const analyzes = data.analyze.filter(({ role }) => role !== 'system');
+
+  const responseBodies = summaries.reduce((acc, summary, index) => {
+    if (index % 2 === 0) {
+      acc.push({
+        user_prompt: summary.content,
+        summary_response: undefined,
+        question_response: undefined,
+        analyze_response: undefined,
+      });
+    } else {
+      acc[acc.length - 1].summary_response = summary.content;
+      acc[acc.length - 1].question_response = questions[index].content;
+      acc[acc.length - 1].analyze_response = analyzes[index].content;
+    }
+
+    return acc;
+  }, [] as ResponseBody[]);
+
+  return responseBodies;
+};
+
+const useManageResponseBodies = (data: UserConversation | null) => {
+  const [responseBodies, setResponseBodies] = useState<ResponseBody[]>(
+    convertUserConversationToResponseBodies(data),
+  );
+
+  useEffect(() => {
+    setResponseBodies(convertUserConversationToResponseBodies(data));
+  }, [data]);
 
   const addUserPrompt = (userPrompt: string) => {
     const newResponseBody = {
@@ -73,18 +109,50 @@ const useDestructParams = (params: Question | Conversation | undefined) => {
   return { title, explanation, question_title, conversation_id };
 };
 
-function Conversation() {
+const useGetConversationById = (conversationId: string) => {
+  const [data, setData] = useState<UserConversation | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const getConversations = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const responseData = await postData<UserConversation>(
+        '/get_conversation',
+        {
+          conversation_id: conversationId,
+          user_id: 1,
+        },
+      );
+      setData(responseData);
+    } catch (error) {
+      setError(error as Error);
+    } finally {
+      setLoading(false);
+    }
+  }, [conversationId]);
+
+  useEffect(() => {
+    getConversations();
+  }, [getConversations]);
+
+  return { data, error, loading };
+};
+
+function ConversationPage() {
   const { params } = useReceiveQuestionByRoute();
   const [inputValue, setInputValue] = useState<string>('');
   const textareaRef = useDynamicTextArea({ value: inputValue });
   const [conversationId, setConversationId] = useState<string | undefined>();
   const { submitText, loading, error } = useSubmitText();
-  const { responseBodies, addUserPrompt, replaceLastResponseBody } =
-    useManageResponseBodies();
   const { title, question_title, conversation_id } = useDestructParams(params);
   const {
     question: { explanation },
   } = useFetchQuestion(question_title);
+  const { data } = useGetConversationById(conversation_id);
+  const { responseBodies, addUserPrompt, replaceLastResponseBody } =
+    useManageResponseBodies(data);
 
   const resetText = () => setInputValue('');
 
@@ -133,4 +201,4 @@ function Conversation() {
   );
 }
 
-export default Conversation;
+export default ConversationPage;

@@ -43,3 +43,24 @@ export interface ResponseProps {
   analysis: ResponseBody['analyze_response'];
   isLast: boolean;
 }
+
+export type RoleContent = {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+};
+
+export type UserConversation = {
+  user_id: number;
+  conversation_id: string;
+  question_id: string | null;
+  topic: string;
+  summaries: RoleContent[];
+  analyze: RoleContent[];
+  questions: RoleContent[];
+  created_at: string; // ISO 8601 format
+  updated_at: string; // ISO 8601 format
+  deleted_at: string | null;
+  is_favorite: boolean;
+  status: 'active' | 'inactive'; // Assuming status can have these values
+  title: string | null;
+};
