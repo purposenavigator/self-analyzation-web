@@ -4,6 +4,7 @@ import ScrollableComponent from '@/components/Coinversation/ScrollableComponent'
 import Header from '@/components/Header';
 import StickyComponent from '@/components/StickyComponent';
 import useDynamicTextArea from '@/hooks/Conversaton/useDynamicTextArea';
+import useManageResponseBodies from '@/hooks/Conversaton/useManageResponseBodies';
 import { useSubmitText } from '@/hooks/Conversaton/useSubmitText';
 import useReceiveQuestionByRoute from '@/hooks/useReceiveQuestionByRoute';
 import { Payload, ResponseBody } from '@/types/Conversation';
@@ -31,33 +32,6 @@ function createPayload(
   return payload;
 }
 
-const useManageResponseBodies = () => {
-  const [responseBodies, setResponseBodies] = useState<ResponseBody[]>([]);
-
-  const addUserPrompt = (userPrompt: string) => {
-    const newResponseBody = {
-      user_prompt: userPrompt,
-      summary_response: undefined,
-      question_response: undefined,
-      analyze_response: undefined,
-    };
-    setResponseBodies((prevResponseBodies) => [
-      ...prevResponseBodies,
-      newResponseBody,
-    ]);
-  };
-
-  const replaceLastResponseBody = (updatedResponse: ResponseBody) => {
-    setResponseBodies((prevResponseBodies) => {
-      const newResponseBodies = [...prevResponseBodies];
-      newResponseBodies[newResponseBodies.length - 1] = updatedResponse;
-      return newResponseBodies;
-    });
-  };
-
-  return { responseBodies, addUserPrompt, replaceLastResponseBody };
-};
-
 function Conversation() {
   const { params } = useReceiveQuestionByRoute();
   const [inputValue, setInputValue] = useState<string>('');
@@ -82,16 +56,19 @@ function Conversation() {
       addUserPrompt(inputValue);
       const result = await submitText(payload, resetText);
       if (result) {
+        console.log(result.answers_response);
         setConversationId(result.conversation_id);
         replaceLastResponseBody({
           summary_response: result.summary_response,
           question_response: result.question_response,
           analyze_response: result.analyze_response,
+          answers_response: result.answers_response,
           user_prompt: result.user_prompt,
         });
       }
     }
   };
+  console.log(responseBodies);
 
   return (
     <div>

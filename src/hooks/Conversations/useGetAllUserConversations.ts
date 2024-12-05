@@ -33,7 +33,7 @@ function useGetAllUserConversations(
     if (immediate) {
       getAllUserConversations();
     }
-  }, [getAllUserConversations, immediate]);
+  }, [immediate, userId]);
 
   return { data, error, loading, getAllUserConversations };
 }

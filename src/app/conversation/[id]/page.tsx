@@ -4,15 +4,16 @@ import ScrollableComponent from '@/components/Coinversation/ScrollableComponent'
 import Header from '@/components/Header';
 import StickyComponent from '@/components/StickyComponent';
 import useDynamicTextArea from '@/hooks/Conversaton/useDynamicTextArea';
+import useManageResponseBodies from '@/hooks/Conversaton/useManageResponseBodies';
 import { useSubmitText } from '@/hooks/Conversaton/useSubmitText';
 import useFetchQuestion from '@/hooks/useFethQuestion';
 import useReceiveQuestionByRoute, {
   isConversation,
 } from '@/hooks/useReceiveQuestionByRoute';
 import { postData } from '@/lib/api';
-import { Payload, ResponseBody, UserConversation } from '@/types/Conversation';
+import { Payload, UserConversation } from '@/types/Conversation';
 import { Question, Conversation } from '@/types/Questions';
-import React, { useState, useCallback, useEffect, use } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 const MAX_TOKENS = 150; // Constant value for max_tokens
 
@@ -36,67 +37,6 @@ function createPayload(
   return payload;
 }
 
-const convertUserConversationToResponseBodies = (
-  data: UserConversation | null,
-): ResponseBody[] => {
-  if (!data) return [];
-  const summaries = data.summaries.filter(({ role }) => role !== 'system');
-  const questions = data.questions.filter(({ role }) => role !== 'system');
-  const analyzes = data.analyze.filter(({ role }) => role !== 'system');
-
-  const responseBodies = summaries.reduce((acc, summary, index) => {
-    if (index % 2 === 0) {
-      acc.push({
-        user_prompt: summary.content,
-        summary_response: undefined,
-        question_response: undefined,
-        analyze_response: undefined,
-      });
-    } else {
-      acc[acc.length - 1].summary_response = summary.content;
-      acc[acc.length - 1].question_response = questions[index].content;
-      acc[acc.length - 1].analyze_response = analyzes[index].content;
-    }
-
-    return acc;
-  }, [] as ResponseBody[]);
-
-  return responseBodies;
-};
-
-const useManageResponseBodies = (data: UserConversation | null) => {
-  const [responseBodies, setResponseBodies] = useState<ResponseBody[]>(
-    convertUserConversationToResponseBodies(data),
-  );
-
-  useEffect(() => {
-    setResponseBodies(convertUserConversationToResponseBodies(data));
-  }, [data]);
-
-  const addUserPrompt = (userPrompt: string) => {
-    const newResponseBody = {
-      user_prompt: userPrompt,
-      summary_response: undefined,
-      question_response: undefined,
-      analyze_response: undefined,
-    };
-    setResponseBodies((prevResponseBodies) => [
-      ...prevResponseBodies,
-      newResponseBody,
-    ]);
-  };
-
-  const replaceLastResponseBody = (updatedResponse: ResponseBody) => {
-    setResponseBodies((prevResponseBodies) => {
-      const newResponseBodies = [...prevResponseBodies];
-      newResponseBodies[newResponseBodies.length - 1] = updatedResponse;
-      return newResponseBodies;
-    });
-  };
-
-  return { responseBodies, addUserPrompt, replaceLastResponseBody };
-};
-
 const useDestructParams = (params: Question | Conversation | undefined) => {
   if (!isConversation(params))
     return {
@@ -114,14 +54,14 @@ const useGetConversationById = (conversationId: string) => {
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const getConversations = useCallback(async () => {
+  const getConversations = useCallback(async (id: string) => {
     setLoading(true);
     setError(null);
     try {
       const responseData = await postData<UserConversation>(
         '/get_conversation',
         {
-          conversation_id: conversationId,
+          conversation_id: id,
           user_id: 1,
         },
       );
@@ -131,11 +71,11 @@ const useGetConversationById = (conversationId: string) => {
     } finally {
       setLoading(false);
     }
-  }, [conversationId]);
+  }, []);
 
   useEffect(() => {
-    getConversations();
-  }, [getConversations]);
+    if (conversationId) getConversations(conversationId);
+  }, [conversationId]);
 
   return { data, error, loading };
 };
@@ -163,7 +103,12 @@ function ConversationPage() {
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      const payload = createPayload(1, title, inputValue, conversationId);
+      const payload = createPayload(
+        1,
+        question_title,
+        inputValue,
+        conversationId,
+      );
       addUserPrompt(inputValue);
       const result = await submitText(payload, resetText);
       if (result) {
@@ -172,6 +117,7 @@ function ConversationPage() {
           summary_response: result.summary_response,
           question_response: result.question_response,
           analyze_response: result.analyze_response,
+          answers_response: result.answers_response,
           user_prompt: result.user_prompt,
         });
       }

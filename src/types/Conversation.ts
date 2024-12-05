@@ -20,12 +20,17 @@ export interface ResponseObject {
   summary_response: string | undefined;
   question_response: string | undefined;
   analyze_response: string | undefined;
+  answers_response: string | undefined;
   conversation_id: string;
 }
 
 export type ResponseBody = Pick<
   ResponseObject,
-  'summary_response' | 'question_response' | 'analyze_response' | 'user_prompt'
+  | 'summary_response'
+  | 'question_response'
+  | 'analyze_response'
+  | 'user_prompt'
+  | 'answers_response'
 >;
 
 export interface UserPromptAndResponseProps {
@@ -57,6 +62,7 @@ export type UserConversation = {
   summaries: RoleContent[];
   analyze: RoleContent[];
   questions: RoleContent[];
+  answers: RoleContent[];
   created_at: string; // ISO 8601 format
   updated_at: string; // ISO 8601 format
   deleted_at: string | null;
