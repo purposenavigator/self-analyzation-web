@@ -1,5 +1,6 @@
 'use client';
 import DynamicTextArea from '@/components/Coinversation/DynamicTextArea';
+import { InputProvider } from '@/components/Coinversation/InputProvider';
 import ScrollableComponent from '@/components/Coinversation/ScrollableComponent';
 import Header from '@/components/Header';
 import StickyComponent from '@/components/StickyComponent';
@@ -125,25 +126,27 @@ function ConversationPage() {
   };
 
   return (
-    <div>
-      <Header />
-      <div className="flex justify-center">
-        <StickyComponent title={question_title} explanation={explanation} />
-      </div>
-      <ScrollableComponent
-        data={responseBodies}
-        loading={loading}
-        error={error}
-      />
-      <div className="flex justify-center fixed bottom-0 left-0 right-0 mb-4">
-        <DynamicTextArea
-          textareaRef={textareaRef}
-          value={inputValue}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
+    <InputProvider setInputValue={setInputValue}>
+      <div>
+        <Header />
+        <div className="flex justify-center">
+          <StickyComponent title={question_title} explanation={explanation} />
+        </div>
+        <ScrollableComponent
+          data={responseBodies}
+          loading={loading}
+          error={error}
         />
+        <div className="flex justify-center fixed bottom-0 left-0 right-0 mb-4">
+          <DynamicTextArea
+            textareaRef={textareaRef}
+            value={inputValue}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+          />
+        </div>
       </div>
-    </div>
+    </InputProvider>
   );
 }
 

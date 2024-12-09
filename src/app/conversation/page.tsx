@@ -1,5 +1,6 @@
 'use client';
 import DynamicTextArea from '@/components/Coinversation/DynamicTextArea';
+import { InputProvider } from '@/components/Coinversation/InputProvider';
 import ScrollableComponent from '@/components/Coinversation/ScrollableComponent';
 import Header from '@/components/Header';
 import StickyComponent from '@/components/StickyComponent';
@@ -56,7 +57,6 @@ function Conversation() {
       addUserPrompt(inputValue);
       const result = await submitText(payload, resetText);
       if (result) {
-        console.log(result.answers_response);
         setConversationId(result.conversation_id);
         replaceLastResponseBody({
           summary_response: result.summary_response,
@@ -68,32 +68,33 @@ function Conversation() {
       }
     }
   };
-  console.log(responseBodies);
 
   return (
-    <div>
-      <Header />
-      <div className="flex justify-center">
-        <StickyComponent
-          title={title}
-          explanation={explanation}
-          questionId={questionId}
+    <InputProvider setInputValue={setInputValue}>
+      <div>
+        <Header />
+        <div className="flex justify-center">
+          <StickyComponent
+            title={title}
+            explanation={explanation}
+            questionId={questionId}
+          />
+        </div>
+        <ScrollableComponent
+          data={responseBodies}
+          loading={loading}
+          error={error}
         />
+        <div className="flex justify-center fixed bottom-0 left-0 right-0 mb-4">
+          <DynamicTextArea
+            textareaRef={textareaRef}
+            value={inputValue}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+          />
+        </div>
       </div>
-      <ScrollableComponent
-        data={responseBodies}
-        loading={loading}
-        error={error}
-      />
-      <div className="flex justify-center fixed bottom-0 left-0 right-0 mb-4">
-        <DynamicTextArea
-          textareaRef={textareaRef}
-          value={inputValue}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-        />
-      </div>
-    </div>
+    </InputProvider>
   );
 }
 

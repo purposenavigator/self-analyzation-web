@@ -45,7 +45,7 @@ export interface UserPromptProps {
 export interface ResponseProps {
   summary: ResponseBody['summary_response'];
   question: ResponseBody['question_response'];
-  analysis: ResponseBody['analyze_response'];
+  answer: ResponseBody['answers_response'];
   isLast: boolean;
 }
 
