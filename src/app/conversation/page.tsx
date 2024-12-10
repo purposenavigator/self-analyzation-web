@@ -53,7 +53,7 @@ function Conversation() {
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      const payload = createPayload(1, title, inputValue);
+      const payload = createPayload(1, title, inputValue, conversationId);
       addUserPrompt(inputValue);
       const result = await submitText(payload, resetText);
       if (result) {
