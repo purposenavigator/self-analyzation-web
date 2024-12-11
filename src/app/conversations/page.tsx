@@ -4,6 +4,7 @@ import React from 'react';
 import useGetAllUserConversations from '@/hooks/Conversations/useGetAllUserConversations';
 import Main from '@/components/Conversations/Main';
 import useStoreConversations from '@/hooks/Conversations/useStoreConversations';
+import { PathProvider } from '@/components/PathProvider';
 
 const conversations = [
   {
@@ -72,8 +73,10 @@ export default function Conversations() {
   const { data } = useGetAllUserConversations({ userId: '1' }, true);
   const retrieved = useStoreConversations(data ?? []);
   return (
-    <HeaderFooter title="Conversations">
-      <Main conversations={retrieved} />
-    </HeaderFooter>
+    <PathProvider path={'conversation'}>
+      <HeaderFooter title="Conversations">
+        <Main conversations={retrieved} title={'Conversations'} />
+      </HeaderFooter>
+    </PathProvider>
   );
 }

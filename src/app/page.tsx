@@ -8,7 +8,7 @@ import MainContent from '@/components/Home/MainContent';
 const items = [
   { title: 'Select a Question to Start', path: 'questions' },
   { title: 'Continue Your Conversations', path: 'conversations' },
-  { title: 'View Your Values and Reasons', path: 'values' },
+  { title: 'View Your Values and Reasons', path: 'viewAnalyze' },
 ];
 
 const renderer = (item: { title: string; path: string }) => (

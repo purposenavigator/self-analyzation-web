@@ -4,13 +4,14 @@ import { TemporaryConversation } from '@/types/Conversations';
 
 interface MainProps {
   conversations: TemporaryConversation[];
+  title: string;
 }
 
-const Main = ({ conversations }: MainProps) => {
+const Main = ({ conversations, title }: MainProps) => {
   return (
     <main className="min-h-screen bg-white p-6">
       <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-        Conversations
+        {title}
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {conversations.map((conversation) => (

@@ -76,7 +76,7 @@ const useGetConversationById = (conversationId: string) => {
 
   useEffect(() => {
     if (conversationId) getConversations(conversationId);
-  }, [conversationId]);
+  }, [conversationId, getConversations]);
 
   return { data, error, loading };
 };

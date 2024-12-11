@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { usePathContext } from '../PathProvider';
 
 interface CardProps {
   conversation_id: string;
@@ -9,10 +10,14 @@ interface CardProps {
 }
 
 const Card = ({ conversation_id, topic, title, main_values }: CardProps) => {
+  const { createPath, dynamicPath } = usePathContext();
+  useEffect(() => {
+    createPath(conversation_id);
+  }, [conversation_id, createPath]);
   return (
     <Link
       href={{
-        pathname: `/conversation/${conversation_id}`,
+        pathname: dynamicPath,
         query: { title, conversation_id, question_title: topic },
       }}
       className="block bg-gray-100 shadow-md rounded-lg overflow-hidden border border-gray-300 hover:shadow-lg transition-shadow duration-200"
