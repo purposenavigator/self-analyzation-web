@@ -55,6 +55,7 @@ const UserPromptAndResponse = ({
   item,
   isLast,
 }: UserPromptAndResponseProps) => {
+  console.log(item);
   return (
     <div className="mx-12 mt-12 mb-24">
       <UserPromprt prompt={item.user_prompt} />
