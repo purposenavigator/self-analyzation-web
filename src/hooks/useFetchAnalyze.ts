@@ -1,10 +1,6 @@
 import { getData } from '@/lib/api';
+import { AttributeAndExplanation } from '@/types/Analyze';
 import { useEffect, useState } from 'react';
-
-type AttributeAndExplanation = {
-  attribute: string;
-  explanation: string;
-};
 
 const cleanString = (input: string): string => {
   return input.replace(/^\d+\.\s*\*\*(.*?)\*\*$/, '$1');
@@ -34,7 +30,6 @@ const useFetchAnalysis = (id: string) => {
     useState<AttributeAndExplanation[]>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  console.log(id, 'id');
 
   useEffect(() => {
     if (!id) return;
