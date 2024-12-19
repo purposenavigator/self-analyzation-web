@@ -4,14 +4,9 @@ import React, { useEffect, useState } from 'react';
 interface StickyComponentProps {
   title: string;
   explanation: string;
-  questionId: string;
 }
 
-const StickyComponent = ({
-  title,
-  explanation,
-  questionId,
-}: StickyComponentProps) => {
+const StickyComponent = ({ title, explanation }: StickyComponentProps) => {
   const [isSticky, setIsSticky] = useState(false);
 
   const handleScroll = () => {

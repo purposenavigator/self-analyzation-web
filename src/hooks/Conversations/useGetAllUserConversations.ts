@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Analysis } from '../../types/Conversations'; // Adjust the import path as necessary
-import { postData } from '../../lib/api';
+import { postData } from '@/lib/api';
+import { Analysis } from '@/types/Conversations';
 
 interface UseRequestOptions {
   userId: string;
@@ -33,7 +33,7 @@ function useGetAllUserConversations(
     if (immediate) {
       getAllUserConversations();
     }
-  }, [getAllUserConversations, immediate]);
+  }, [immediate, getAllUserConversations]);
 
   return { data, error, loading, getAllUserConversations };
 }

@@ -10,7 +10,6 @@ export type UseSubmitTextReturn = {
 export interface Payload {
   user_id: number;
   topic: string;
-  question_id: string;
   prompt: string;
   max_tokens: number;
   conversation_id?: string; // Optional field
@@ -21,12 +20,17 @@ export interface ResponseObject {
   summary_response: string | undefined;
   question_response: string | undefined;
   analyze_response: string | undefined;
+  answers_response: string | undefined;
   conversation_id: string;
 }
 
 export type ResponseBody = Pick<
   ResponseObject,
-  'summary_response' | 'question_response' | 'analyze_response' | 'user_prompt'
+  | 'summary_response'
+  | 'question_response'
+  | 'analyze_response'
+  | 'user_prompt'
+  | 'answers_response'
 >;
 
 export interface UserPromptAndResponseProps {
@@ -41,6 +45,28 @@ export interface UserPromptProps {
 export interface ResponseProps {
   summary: ResponseBody['summary_response'];
   question: ResponseBody['question_response'];
-  analysis: ResponseBody['analyze_response'];
+  answer: ResponseBody['answers_response'];
   isLast: boolean;
 }
+
+export type RoleContent = {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+};
+
+export type UserConversation = {
+  user_id: number;
+  conversation_id: string;
+  question_id: string | null;
+  topic: string;
+  summaries: RoleContent[];
+  analyze: RoleContent[];
+  questions: RoleContent[];
+  answers: RoleContent[];
+  created_at: string; // ISO 8601 format
+  updated_at: string; // ISO 8601 format
+  deleted_at: string | null;
+  is_favorite: boolean;
+  status: 'active' | 'inactive'; // Assuming status can have these values
+  title: string | null;
+};

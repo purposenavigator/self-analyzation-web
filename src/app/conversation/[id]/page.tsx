@@ -7,9 +7,14 @@ import StickyComponent from '@/components/StickyComponent';
 import useDynamicTextArea from '@/hooks/Conversaton/useDynamicTextArea';
 import useManageResponseBodies from '@/hooks/Conversaton/useManageResponseBodies';
 import { useSubmitText } from '@/hooks/Conversaton/useSubmitText';
-import useReceiveQuestionByRoute from '@/hooks/useReceiveQuestionByRoute';
-import { Payload, ResponseBody } from '@/types/Conversation';
-import React, { useState } from 'react';
+import useFetchQuestion from '@/hooks/useFethQuestion';
+import useReceiveQuestionByRoute, {
+  isConversation,
+} from '@/hooks/useReceiveQuestionByRoute';
+import { postData } from '@/lib/api';
+import { Payload, UserConversation } from '@/types/Conversation';
+import { Question, Conversation } from '@/types/Questions';
+import React, { useState, useCallback, useEffect } from 'react';
 
 const MAX_TOKENS = 150; // Constant value for max_tokens
 
@@ -33,17 +38,63 @@ function createPayload(
   return payload;
 }
 
-function Conversation() {
+const useDestructParams = (params: Question | Conversation | undefined) => {
+  if (!isConversation(params))
+    return {
+      title: '',
+      explanation: '',
+      question_title: '',
+      conversation_id: '',
+    };
+  const { title, explanation, question_title, conversation_id } = params;
+  return { title, explanation, question_title, conversation_id };
+};
+
+const useGetConversationById = (conversationId: string) => {
+  const [data, setData] = useState<UserConversation | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const getConversations = useCallback(async (id: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const responseData = await postData<UserConversation>(
+        '/get_conversation',
+        {
+          conversation_id: id,
+          user_id: 1,
+        },
+      );
+      setData(responseData);
+    } catch (error) {
+      setError(error as Error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (conversationId) getConversations(conversationId);
+  }, [conversationId, getConversations]);
+
+  return { data, error, loading };
+};
+
+function ConversationPage() {
   const { params } = useReceiveQuestionByRoute();
   const [inputValue, setInputValue] = useState<string>('');
   const textareaRef = useDynamicTextArea({ value: inputValue });
   const [conversationId, setConversationId] = useState<string | undefined>();
   const { submitText, loading, error } = useSubmitText();
+  const { title, question_title, conversation_id } = useDestructParams(params);
+  const {
+    question: { explanation },
+  } = useFetchQuestion(question_title);
+  const { data } = useGetConversationById(conversation_id);
   const { responseBodies, addUserPrompt, replaceLastResponseBody } =
-    useManageResponseBodies();
+    useManageResponseBodies(data);
 
-  if (!params) return null;
-  const { title, explanation, questionId } = params;
   const resetText = () => setInputValue('');
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -53,7 +104,12 @@ function Conversation() {
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      const payload = createPayload(1, title, inputValue, conversationId);
+      const payload = createPayload(
+        1,
+        question_title,
+        inputValue,
+        conversationId,
+      );
       addUserPrompt(inputValue);
       const result = await submitText(payload, resetText);
       if (result) {
@@ -74,11 +130,7 @@ function Conversation() {
       <div>
         <Header />
         <div className="flex justify-center">
-          <StickyComponent
-            title={title}
-            explanation={explanation}
-            questionId={questionId}
-          />
+          <StickyComponent title={question_title} explanation={explanation} />
         </div>
         <ScrollableComponent
           data={responseBodies}
@@ -98,4 +150,4 @@ function Conversation() {
   );
 }
 
-export default Conversation;
+export default ConversationPage;
