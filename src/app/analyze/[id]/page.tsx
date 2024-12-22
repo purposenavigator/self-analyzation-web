@@ -5,6 +5,7 @@ import useFetchAnalysis from '@/hooks/useFetchAnalyze';
 import useReceiveQuestionByRoute from '@/hooks/useReceiveQuestionByRoute';
 import { AttributeAndExplanation } from '@/types/Analyze';
 import React from 'react';
+import { Card, CardHeader, CardContent, Typography } from '@mui/material';
 
 /*
 [Header]
@@ -48,13 +49,30 @@ const renderValueCards = (
 
 const Analyze = () => {
   const { params } = useReceiveQuestionByRoute();
-  const { attributeAndExplanations } = useFetchAnalysis(
+  const { attributeAndExplanations, summary } = useFetchAnalysis(
     params?.conversation_id,
   );
 
   return (
     <div>
       <Header />
+      <div style={{ margin: '2rem 4rem 0' }}>
+        <Card>
+          <CardHeader
+            title={
+              <Typography variant="h6" component="div">
+                Analysis Summary
+              </Typography>
+            }
+          />
+          <CardContent>
+            <Typography variant="body1" color="text.secondary">
+              {summary}
+            </Typography>
+          </CardContent>
+        </Card>
+      </div>
+      ;
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mx-16 mt-8">
         {renderValueCards(attributeAndExplanations)}
       </div>
