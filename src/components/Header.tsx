@@ -1,5 +1,10 @@
 import React from 'react';
-const Header = ({ title }) => {
+
+interface HeaderProps {
+  title?: string;
+}
+
+const Header = ({ title }: HeaderProps) => {
   return (
     <header className="bg-white shadow-sm py-4 px-6 flex justify-between">
       <div className="text-lg font-bold">{title}</div>
