@@ -14,7 +14,7 @@ import {
   Box,
 } from '@mui/material';
 import AnalysisSummaryCard from '@/components/Analyze/AnalysisSummaryCard';
-// import { ValueAnalysis } from '@/pagerecommend/value-analysis';
+import { ValueAnalysis } from '@/components/Analyze/ValueAnalysis';
 // import { ValueRadar } from '@/pagerecommend/value-radar';
 
 interface TabPanelProps {
@@ -66,8 +66,9 @@ const Analyze = () => {
               <Card>
                 <CardHeader title="価値観の詳細分析" />
                 <CardContent>
-                  {/* <ValueAnalysis /> */}
-                  <Typography>Value Analysis Content Here</Typography>
+                  <ValueAnalysis
+                    attributeAndExplanations={attributeAndExplanations || []}
+                  />
                 </CardContent>
               </Card>
               <Card>
