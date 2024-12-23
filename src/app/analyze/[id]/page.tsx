@@ -52,7 +52,7 @@ const Analyze = () => {
         <Box sx={{ width: '100%', mt: 4 }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange}>
-              <Tab label="価値観分析" />
+              <Tab label="Value Analysis" />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
@@ -64,7 +64,7 @@ const Analyze = () => {
               }}
             >
               <Card>
-                <CardHeader title="価値観の詳細分析" />
+                <CardHeader title="Detailed Value Analysis" />
                 <CardContent>
                   <ValueAnalysis
                     attributeAndExplanations={attributeAndExplanations || []}
@@ -72,7 +72,7 @@ const Analyze = () => {
                 </CardContent>
               </Card>
               <Card>
-                <CardHeader title="価値観レーダーチャート" />
+                <CardHeader title="Value Radar Chart" />
                 <CardContent>
                   {/* <ValueRadar /> */}
                   <Typography>Value Radar Chart Here</Typography>
