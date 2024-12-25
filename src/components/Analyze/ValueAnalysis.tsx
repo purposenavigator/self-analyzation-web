@@ -7,15 +7,13 @@ import {
   Chip,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { AttributeAndExplanation } from '@/types/Analyze';
+import { AttributeExplanation } from '@/types/Analyze';
 
 interface ValueAnalysisProps {
-  attributeAndExplanations: AttributeAndExplanation[];
+  attributeExplanations: AttributeExplanation[];
 }
 
-export function ValueAnalysis({
-  attributeAndExplanations,
-}: ValueAnalysisProps) {
+export function ValueAnalysis({ attributeExplanations }: ValueAnalysisProps) {
   const importanceColor = {
     high: 'error',
     medium: 'warning',
@@ -24,7 +22,7 @@ export function ValueAnalysis({
 
   return (
     <div>
-      {attributeAndExplanations.map((item, index) => (
+      {attributeExplanations.map((item, index) => (
         <Accordion key={index}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}

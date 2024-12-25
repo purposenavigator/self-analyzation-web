@@ -2,20 +2,11 @@
 import Header from '@/components/Header';
 import useFetchAnalysis from '@/hooks/useFetchAnalyze';
 import useReceiveQuestionByRoute from '@/hooks/useReceiveQuestionByRoute';
-import { AttributeAndExplanation } from '@/types/Analyze';
 import React from 'react';
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  Typography,
-  Tabs,
-  Tab,
-  Box,
-} from '@mui/material';
+import { Card, CardHeader, CardContent, Tabs, Tab, Box } from '@mui/material';
 import AnalysisSummaryCard from '@/components/Analyze/AnalysisSummaryCard';
 import { ValueAnalysis } from '@/components/Analyze/ValueAnalysis';
-// import { ValueRadar } from '@/pagerecommend/value-radar';
+import { ValueRadar } from '@/components/Analyze/ValueRadar';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -35,7 +26,7 @@ function TabPanel(props: TabPanelProps) {
 
 const Analyze = () => {
   const { params } = useReceiveQuestionByRoute();
-  const { attributeAndExplanations, summary } = useFetchAnalysis(
+  const { attributeExplanations, summary } = useFetchAnalysis(
     params?.conversation_id,
   );
   const [value, setValue] = React.useState(0);
@@ -67,15 +58,14 @@ const Analyze = () => {
                 <CardHeader title="Detailed Value Analysis" />
                 <CardContent>
                   <ValueAnalysis
-                    attributeAndExplanations={attributeAndExplanations || []}
+                    attributeExplanations={attributeExplanations || []}
                   />
                 </CardContent>
               </Card>
               <Card>
                 <CardHeader title="Value Radar Chart" />
                 <CardContent>
-                  {/* <ValueRadar /> */}
-                  <Typography>Value Radar Chart Here</Typography>
+                  <ValueRadar />
                 </CardContent>
               </Card>
             </div>

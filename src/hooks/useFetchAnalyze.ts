@@ -1,5 +1,5 @@
 import { getData } from '@/lib/api';
-import { AttributeAndExplanation } from '@/types/Analyze';
+import { AttributeExplanation, Label } from '@/types/Analyze';
 import { useEffect, useState } from 'react';
 
 const cleanString = (input: string): string => {
@@ -13,7 +13,7 @@ const getAttributeAndExplanationObject = (
 ) => {
   const attribute = cleanString(_attribute.trim());
   const explanation = _explanation.trim();
-  const label = _label.trim();
+  const label = _label.trim() as Label;
   const evaluation = { label, percentage: _percentage.trim() };
   return { attribute, explanation, evaluation };
 };
@@ -57,8 +57,8 @@ const getSummary = (input: string) => {
 };
 
 const useFetchAnalysis = (id: string) => {
-  const [attributeAndExplanations, setAttributeAndExplanations] =
-    useState<AttributeAndExplanation[]>();
+  const [attributeExplanations, setAttributeExplanations] =
+    useState<AttributeExplanation[]>();
   const [summary, setSummary] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -68,7 +68,7 @@ const useFetchAnalysis = (id: string) => {
     setLoading(true);
     getData<string>(`/analyze/${id}`)
       .then((response) => {
-        setAttributeAndExplanations(
+        setAttributeExplanations(
           getAttributeAndExplanationObjectArray(response),
         );
         setSummary(getSummary(response).join(' '));
@@ -82,7 +82,7 @@ const useFetchAnalysis = (id: string) => {
       });
   }, [id]);
 
-  return { attributeAndExplanations, loading, error, summary };
+  return { attributeExplanations, loading, error, summary };
 };
 
 export default useFetchAnalysis;
