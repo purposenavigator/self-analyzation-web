@@ -33,7 +33,11 @@ export function ValueAnalysis({
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Typography>{item.attribute}</Typography>
-              <Chip label="high" color={importanceColor.high} size="small" />
+              <Chip
+                label={`${item.evaluation.label} (${item.evaluation.percentage})`}
+                color={importanceColor[item.evaluation.label]}
+                size="small"
+              />
             </div>
           </AccordionSummary>
           <AccordionDetails>

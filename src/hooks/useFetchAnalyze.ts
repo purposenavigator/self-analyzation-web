@@ -8,22 +8,43 @@ const cleanString = (input: string): string => {
 const getAttributeAndExplanationObject = (
   _attribute: string,
   _explanation: string,
+  _label: string,
+  _percentage: string,
 ) => {
   const attribute = cleanString(_attribute.trim());
   const explanation = _explanation.trim();
-  return { attribute, explanation };
+  const label = _label.trim();
+  const evaluation = { label, percentage: _percentage.trim() };
+  return { attribute, explanation, evaluation };
 };
 
 const getAttributeAndExplanationObjectArray = (input: string) => {
-  console.log(input.split('\n'));
   return input
     .split('\n')
-    .filter((s) => s !== '')
-    .filter((s) => /^\d+\./.test(s))
-    .map((s) => s.trim())
+    .filter((s) => s.trim() !== '') // Remove empty or whitespace-only lines
+    .filter((s) => /^\d+\./.test(s.trim())) // Match lines starting with a number followed by a period
+    .map((s) => s.trim()) // Trim whitespace
     .map((s) => {
-      const [attribute, explanation] = s.split('-');
-      return getAttributeAndExplanationObject(attribute, explanation);
+      const [attribute, explanation, evaluation] = s
+        .split(' - ')
+        .map((part) => part.trim());
+      if (!attribute || !explanation || !evaluation) {
+        throw new Error(`Invalid input format: ${s}`);
+      }
+
+      const [label, percentage] = evaluation
+        .split(':')
+        .map((part) => part.replace(/[{}]/g, '').trim());
+      if (!label || !percentage) {
+        throw new Error(`Invalid evaluation format: ${evaluation}`);
+      }
+
+      return getAttributeAndExplanationObject(
+        attribute,
+        explanation,
+        label,
+        percentage,
+      );
     });
 };
 
