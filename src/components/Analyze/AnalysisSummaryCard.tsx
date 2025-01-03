@@ -7,7 +7,12 @@ interface AnalysisSummaryCardProps {
 
 const AnalysisSummaryCard = ({ summary }: AnalysisSummaryCardProps) => {
   return (
-    <Card>
+    <Card
+      sx={{
+        width: '95%',
+        margin: 'auto',
+      }}
+    >
       <CardHeader
         title={
           <Typography variant="h6" component="div">
