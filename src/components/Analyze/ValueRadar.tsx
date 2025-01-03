@@ -11,17 +11,9 @@ import {
 } from 'recharts';
 
 import { Card, CardContent } from '@mui/material';
+import { ValueRadarType } from '@/types/ValueRadar';
 
-export function ValueRadar() {
-  const data = [
-    { subject: 'ワークライフバランス', value: 4.5 },
-    { subject: '自己成長', value: 4.0 },
-    { subject: '社会貢献', value: 3.8 },
-    { subject: '創造性', value: 3.2 },
-    { subject: '安定性', value: 4.2 },
-    { subject: 'チャレンジ精神', value: 3.5 },
-  ];
-
+export function ValueRadar({ data }: { data: ValueRadarType[] }) {
   return (
     <Card>
       <CardContent>
@@ -29,7 +21,7 @@ export function ValueRadar() {
           <ResponsiveContainer width="100%" height="100%">
             <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
               <PolarGrid />
-              <PolarAngleAxis dataKey="subject" />
+              <PolarAngleAxis dataKey="attribute" />
               <PolarRadiusAxis angle={30} domain={[0, 5]} />
               <Radar
                 name="価値観スコア"

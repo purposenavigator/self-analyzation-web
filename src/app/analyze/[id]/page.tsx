@@ -26,7 +26,7 @@ function TabPanel(props: TabPanelProps) {
 
 const Analyze = () => {
   const { params } = useReceiveQuestionByRoute();
-  const { attributeExplanations, summary } = useFetchAnalysis(
+  const { attributeExplanations, summary, valueRadarData } = useFetchAnalysis(
     params?.conversation_id,
   );
   const [value, setValue] = React.useState(0);
@@ -65,7 +65,7 @@ const Analyze = () => {
               <Card>
                 <CardHeader title="Value Radar Chart" />
                 <CardContent>
-                  <ValueRadar />
+                  <ValueRadar data={valueRadarData} />
                 </CardContent>
               </Card>
             </div>
