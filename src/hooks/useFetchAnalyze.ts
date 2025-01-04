@@ -1,6 +1,7 @@
 import { getData } from '@/lib/api';
-import { AttributeAndExplanation } from '@/types/Analyze';
+import { AttributeExplanation, Label } from '@/types/Analyze';
 import { useEffect, useState } from 'react';
+import { ValueRadarType } from '@/types/ValueRadar';
 
 const cleanString = (input: string): string => {
   return input.replace(/^\d+\.\s*\*\*(.*?)\*\*$/, '$1');
@@ -8,36 +9,87 @@ const cleanString = (input: string): string => {
 const getAttributeAndExplanationObject = (
   _attribute: string,
   _explanation: string,
+  _label: string,
+  _percentage: string,
 ) => {
   const attribute = cleanString(_attribute.trim());
   const explanation = _explanation.trim();
-  return { attribute, explanation };
+  const label = _label.trim() as Label;
+  const evaluation = { label, percentage: _percentage.trim() };
+  return { attribute, explanation, evaluation };
 };
 
 const getAttributeAndExplanationObjectArray = (input: string) => {
   return input
     .split('\n')
-    .map((s) => s.trim())
-    .filter((s) => s !== '')
+    .filter((s) => s.trim() !== '') // Remove empty or whitespace-only lines
+    .filter((s) => /^\d+\./.test(s.trim())) // Match lines starting with a number followed by a period
+    .map((s) => s.trim()) // Trim whitespace
     .map((s) => {
-      const [attribute, explanation] = s.split('-');
-      return getAttributeAndExplanationObject(attribute, explanation);
+      const [attribute, explanation, evaluation] = s
+        .split(' - ')
+        .map((part) => part.trim());
+      if (!attribute || !explanation || !evaluation) {
+        throw new Error(`Invalid input format: ${s}`);
+      }
+
+      const [label, percentage] = evaluation
+        .split(':')
+        .map((part) => part.replace(/[{}]/g, '').trim());
+      if (!label || !percentage) {
+        throw new Error(`Invalid evaluation format: ${evaluation}`);
+      }
+
+      return getAttributeAndExplanationObject(
+        attribute,
+        explanation,
+        label,
+        percentage,
+      );
     });
 };
 
+const getSummary = (input: string) => {
+  return input
+    .split('\n')
+    .filter((s) => s !== '')
+    .filter((s) => !/^\d+\./.test(s))
+    .map((s) => s.trim());
+};
+
+const getJoinedSummary = (input: string): string => {
+  return getSummary(input).join(' ');
+};
+
+const convertToValueRadarType = (
+  item: AttributeExplanation,
+): ValueRadarType => {
+  const percentage = parseFloat(item.evaluation.percentage.replace('%', ''));
+  return {
+    attribute: item.attribute,
+    value: (percentage / 100) * 5,
+  };
+};
+
 const useFetchAnalysis = (id: string) => {
-  const [attributeAndExplanations, setAttributeAndExplanations] =
-    useState<AttributeAndExplanation[]>();
+  const [attributeExplanations, setAttributeExplanations] =
+    useState<AttributeExplanation[]>();
+  const [summary, setSummary] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [valueRadarData, setValueRadarData] = useState<ValueRadarType[]>([]);
 
   useEffect(() => {
     if (!id) return;
     setLoading(true);
     getData<string>(`/analyze/${id}`)
       .then((response) => {
-        setAttributeAndExplanations(
-          getAttributeAndExplanationObjectArray(response),
+        const attributeExplanationArray =
+          getAttributeAndExplanationObjectArray(response);
+        setAttributeExplanations(attributeExplanationArray);
+        setSummary(getJoinedSummary(response));
+        setValueRadarData(
+          attributeExplanationArray.map(convertToValueRadarType),
         );
         setLoading(false);
         return response;
@@ -49,7 +101,7 @@ const useFetchAnalysis = (id: string) => {
       });
   }, [id]);
 
-  return { attributeAndExplanations, loading, error };
+  return { attributeExplanations, loading, error, summary, valueRadarData };
 };
 
 export default useFetchAnalysis;

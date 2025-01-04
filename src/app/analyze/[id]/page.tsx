@@ -1,71 +1,79 @@
 'use client';
-import Accordion from '@/components/Analyze/Analyze';
 import Header from '@/components/Header';
 import useFetchAnalysis from '@/hooks/useFetchAnalyze';
 import useReceiveQuestionByRoute from '@/hooks/useReceiveQuestionByRoute';
-import { AttributeAndExplanation } from '@/types/Analyze';
 import React from 'react';
+import { Card, CardHeader, CardContent, Tabs, Tab, Box } from '@mui/material';
+import AnalysisSummaryCard from '@/components/Analyze/AnalysisSummaryCard';
+import { ValueAnalysis } from '@/components/Analyze/ValueAnalysis';
+import { ValueRadar } from '@/components/Analyze/ValueRadar';
 
-/*
-[Header]
-→ Your Values Summary
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
 
-[Key Values Identified]
-#family #creativity #personal growth
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
 
-[Visualization]
-(Interactive tree, wheel, or word cloud)
-
-[Contextual Insights]
-
-Family: “… based on [conversation excerpt].”
-Creativity: “… inferred from [conversation excerpt].”
-[Next Steps]
-[Save Values] [Export] [Start Another Conversation]
-*/
-
-const ValueCard = ({ attribute, explanation }: AttributeAndExplanation) => {
   return (
-    <div className="block bg-gray-100 shadow-md rounded-lg overflow-hidden border border-gray-300 hover:shadow-lg transition-shadow duration-200">
-      <div className="p-4">
-        <h4 className="text-xl font-bold text-gray-900 mb-2">{attribute}</h4>
-        <div className="mb-2">
-          <p className="font-semibold text-gray-700">{explanation}</p>
-        </div>
-      </div>
+    <div role="tabpanel" hidden={value !== index} {...other}>
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
-};
-
-const renderValueCards = (
-  attributeAndExplanations: AttributeAndExplanation[] | undefined,
-) => {
-  if (!attributeAndExplanations) return null;
-  return attributeAndExplanations.map((item, index) => (
-    <ValueCard key={index} {...item} />
-  ));
-};
+}
 
 const Analyze = () => {
   const { params } = useReceiveQuestionByRoute();
-  const { attributeAndExplanations } = useFetchAnalysis(
+  const { attributeExplanations, summary, valueRadarData } = useFetchAnalysis(
     params?.conversation_id,
   );
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   return (
     <div>
       <Header />
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mx-16 mt-8">
-        {renderValueCards(attributeAndExplanations)}
+      <div style={{ margin: '2rem 4rem 0' }}>
+        <AnalysisSummaryCard summary={summary} />
+        <Box sx={{ width: '100%', mt: 4 }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs value={value} onChange={handleChange}>
+              <Tab label="Value Analysis" />
+            </Tabs>
+          </Box>
+          <TabPanel value={value} index={0}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: '24px',
+              }}
+            >
+              <Card>
+                <CardHeader title="Detailed Value Analysis" />
+                <CardContent>
+                  <ValueAnalysis
+                    attributeExplanations={attributeExplanations || []}
+                  />
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader title="Value Radar Chart" />
+                <CardContent>
+                  <ValueRadar data={valueRadarData} />
+                </CardContent>
+              </Card>
+            </div>
+          </TabPanel>
+        </Box>
       </div>
-      <Accordion />
     </div>
   );
 };
 
 export default Analyze;
-//<ValuesSummary />
-//      <KeyValuesIdentified />
-//      <Visualization />
-//      <ContextualInsights />
-//      <NextSteps />
