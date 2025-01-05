@@ -8,6 +8,7 @@ import React, {
   ReactNode,
   useEffect,
 } from 'react';
+import Cookies from 'js-cookie';
 
 interface AuthContextProps {
   isAuthenticated: boolean;
@@ -21,19 +22,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    // Replace this with actual authentication check
-    const token = localStorage.getItem('auth_token');
+    const token = Cookies.get('auth_token');
     setIsAuthenticated(!!token);
   }, []);
 
   const login = () => {
     // Mock login function
-    localStorage.setItem('auth_token', 'your_token');
+    Cookies.set('auth_token', 'your_token', {
+      expires: 7,
+      secure: true,
+      sameSite: 'strict',
+    });
     setIsAuthenticated(true);
   };
 
   const logout = () => {
-    localStorage.removeItem('auth_token');
+    Cookies.remove('auth_token');
     setIsAuthenticated(false);
   };
 
