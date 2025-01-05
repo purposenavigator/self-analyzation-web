@@ -8,26 +8,15 @@ import {
   TextField,
   BoxProps,
 } from '@mui/material';
+import { useAuth } from '@/context/AuthContext';
 
 interface UserAuthFormProps extends BoxProps {
   className?: string;
 }
 
-async function login(username: string, password: string) {
-  // Implement the actual login process here
-  // Example: Validate the user in the database and create a session
-  console.log('Login attempt:', username, password);
-
-  // In this example, perform simple validation
-  if (username === 'demo' && password === 'password') {
-    return { success: true, message: 'Login successful' };
-  } else {
-    throw new Error('Incorrect username or password');
-  }
-}
-
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const { login } = useAuth();
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
@@ -43,7 +32,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
     try {
       await login(username, password);
-      // Handle successful login (e.g., redirect to analysis page)
     } catch (error) {
       console.error('Login error:', error);
       // Handle error (e.g., display error message)
