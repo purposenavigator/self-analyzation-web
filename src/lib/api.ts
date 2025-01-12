@@ -9,17 +9,22 @@ interface APIError extends Error {
   status?: number;
 }
 
-async function apiRequest<T>(
-  path: string,
-  options: RequestOptions = {},
-): Promise<T> {
-  const res = await fetch(`${API_URL}${path}`, {
+function getRequestOptions(options: RequestOptions): RequestOptions {
+  return {
     ...options,
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
       ...(options.headers || {}),
     },
-  });
+  };
+}
+
+async function apiRequest<T>(
+  path: string,
+  options: RequestOptions = {},
+): Promise<T> {
+  const res = await fetch(`${API_URL}${path}`, getRequestOptions(options));
 
   if (!res.ok) {
     const error: APIError = new Error('An error occurred while fetching data.');
