@@ -13,15 +13,17 @@ import { getData, postData } from '../lib/api'; // Import getData and postData
 
 interface AuthContextProps {
   isAuthenticated: boolean;
-  login: (username: string, password: string) => void;
-  logout: () => void;
-  register: (username: string, password: string) => void; // Add register function
+  login: (username: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  register: (username: string, password: string) => Promise<void>;
+  error: string | null; // Add error type
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [error, setError] = useState<string | null>(null); // Add error state
   const router = useRouter(); // Initialize useRouter
 
   useEffect(() => {
@@ -44,9 +46,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await postData('/login', { username, password });
       setIsAuthenticated(true);
+      setError(null); // Clear error on success
       router.push('/'); // Redirect to home after login
     } catch (error) {
       console.error('Login failed:', error);
+      setError('Invalid username or password'); // Set error message
     }
   };
 
@@ -54,9 +58,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await postData('/logout', {});
       setIsAuthenticated(false);
+      setError(null); // Clear error on success
       router.push('/login'); // Redirect to login after logout
     } catch (error) {
       console.error('Logout failed:', error);
+      setError('Failed to logout'); // Set error message
     }
   };
 
@@ -64,14 +70,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await postData('/register', { username, password });
       setIsAuthenticated(true);
+      setError(null); // Clear error on success
       router.push('/'); // Redirect to home after registration
     } catch (error) {
       console.error('Registration failed:', error);
+      setError('Registration failed'); // Set error message
     }
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, register }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, login, logout, register, error }}
+    >
       {children}
     </AuthContext.Provider>
   );

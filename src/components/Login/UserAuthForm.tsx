@@ -7,6 +7,7 @@ import {
   CircularProgress,
   TextField,
   BoxProps,
+  Typography,
 } from '@mui/material';
 import { useAuth } from '@/context/AuthContext';
 
@@ -16,7 +17,7 @@ interface UserAuthFormProps extends BoxProps {
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const { login } = useAuth();
+  const { login, error } = useAuth(); // Get error from AuthContext
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
@@ -66,6 +67,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               fullWidth
             />
           </Box>
+          {error && (
+            <Typography color="error" variant="body2">
+              {error}
+            </Typography>
+          )}
           <Button
             type="submit"
             variant="contained"
