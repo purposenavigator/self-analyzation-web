@@ -1,6 +1,6 @@
 import React from 'react';
 import { Metadata } from 'next';
-import AppTitleSection from '@/components/Login/AppTitleSection';
+import AppTitleSection from '@/components/AppTitleSection';
 import LoginFormSection from '@/components/Login/LoginFormSection';
 import ResponsiveContentWrapper from '@/components/ResponsiveContentWrapper';
 

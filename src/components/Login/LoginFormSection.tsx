@@ -32,7 +32,7 @@ const LoginFormSection = () => (
     <Box sx={{ textAlign: 'center', mt: 2 }}>
       <Typography variant="body2" color="textSecondary">
         Don't have an account?{' '}
-        <Link href="/signup" passHref>
+        <Link href="/register" passHref>
           <Button variant="text" color="primary">
             Sign up
           </Button>
