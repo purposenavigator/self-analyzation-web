@@ -46,7 +46,7 @@ export function UserSignUpForm() {
       enqueueSnackbar('A new account has been created.', {
         variant: 'success',
       });
-      router.push('/dashboard');
+      router.push('/');
     } catch (error) {
       setIsLoading(false);
       enqueueSnackbar('An error occurred while creating the account.', {
