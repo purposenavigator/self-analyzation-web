@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await postData('/logout', {});
       setIsAuthenticated(false);
       setError(null); // Clear error on success
-      router.push('/login'); // Redirect to login after logout
+      router.replace('/login');
     } catch (error) {
       console.error('Logout failed:', error);
       setError('Failed to logout'); // Set error message
