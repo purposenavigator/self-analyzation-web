@@ -1,12 +1,12 @@
 import { HeaderFooterProps } from '@/types/Questions';
 import Footer from './Footer';
-import Header from './Header';
 import React from 'react';
+import { Header } from './Header/Header';
 
-function HeaderFooter({ children, title }: HeaderFooterProps) {
+function HeaderFooter({ children }: HeaderFooterProps) {
   return (
     <div className="h-screen flex flex-col">
-      <Header title={title} />
+      <Header />
       <div>{children}</div>
       <Footer />
     </div>
