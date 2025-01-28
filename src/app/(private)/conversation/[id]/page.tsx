@@ -81,13 +81,25 @@ const useGetConversationById = (conversationId: string) => {
   return { data, error, loading };
 };
 
+const useSetConversationId = (conversation_id: string | undefined) => {
+  const [conversationId, setConversationId] = useState<string | undefined>(
+    conversation_id,
+  );
+
+  useEffect(() => {
+    if (conversation_id) setConversationId(conversation_id);
+  }, [conversation_id]);
+
+  return { conversationId, setConversationId };
+};
+
 function ConversationPage() {
   const { params } = useReceiveQuestionByRoute();
   const [inputValue, setInputValue] = useState<string>('');
   const textareaRef = useDynamicTextArea({ value: inputValue });
-  const [conversationId, setConversationId] = useState<string | undefined>();
   const { submitText, loading, error } = useSubmitText();
   const { title, question_title, conversation_id } = useDestructParams(params);
+  const { conversationId } = useSetConversationId(conversation_id);
   const {
     question: { explanation },
   } = useFetchQuestion(question_title);
@@ -113,7 +125,6 @@ function ConversationPage() {
       addUserPrompt(inputValue);
       const result = await submitText(payload, resetText);
       if (result) {
-        setConversationId(result.conversation_id);
         replaceLastResponseBody({
           summary_response: result.summary_response,
           question_response: result.question_response,
