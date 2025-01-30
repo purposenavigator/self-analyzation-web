@@ -19,13 +19,11 @@ import React, { useState, useCallback, useEffect } from 'react';
 const MAX_TOKENS = 150; // Constant value for max_tokens
 
 function createPayload(
-  user_id: number,
   topic: string,
   prompt: string,
   conversation_id?: string,
 ): Payload {
   const payload: Payload = {
-    user_id,
     topic,
     prompt,
     max_tokens: MAX_TOKENS,
@@ -81,13 +79,25 @@ const useGetConversationById = (conversationId: string) => {
   return { data, error, loading };
 };
 
+const useSetConversationId = (conversation_id: string | undefined) => {
+  const [conversationId, setConversationId] = useState<string | undefined>(
+    conversation_id,
+  );
+
+  useEffect(() => {
+    if (conversation_id) setConversationId(conversation_id);
+  }, [conversation_id]);
+
+  return { conversationId, setConversationId };
+};
+
 function ConversationPage() {
   const { params } = useReceiveQuestionByRoute();
   const [inputValue, setInputValue] = useState<string>('');
   const textareaRef = useDynamicTextArea({ value: inputValue });
-  const [conversationId, setConversationId] = useState<string | undefined>();
   const { submitText, loading, error } = useSubmitText();
   const { title, question_title, conversation_id } = useDestructParams(params);
+  const { conversationId } = useSetConversationId(conversation_id);
   const {
     question: { explanation },
   } = useFetchQuestion(question_title);
@@ -104,16 +114,10 @@ function ConversationPage() {
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      const payload = createPayload(
-        1,
-        question_title,
-        inputValue,
-        conversationId,
-      );
+      const payload = createPayload(question_title, inputValue, conversationId);
       addUserPrompt(inputValue);
       const result = await submitText(payload, resetText);
       if (result) {
-        setConversationId(result.conversation_id);
         replaceLastResponseBody({
           summary_response: result.summary_response,
           question_response: result.question_response,

@@ -14,13 +14,11 @@ import React, { useState } from 'react';
 const MAX_TOKENS = 150; // Constant value for max_tokens
 
 function createPayload(
-  user_id: number,
   topic: string,
   prompt: string,
   conversation_id?: string,
 ): Payload {
   const payload: Payload = {
-    user_id,
     topic,
     prompt,
     max_tokens: MAX_TOKENS,
@@ -53,7 +51,7 @@ function Conversation() {
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      const payload = createPayload(1, title, inputValue, conversationId);
+      const payload = createPayload(title, inputValue, conversationId);
       addUserPrompt(inputValue);
       const result = await submitText(payload, resetText);
       if (result) {
