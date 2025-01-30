@@ -8,7 +8,7 @@ export type UseSubmitTextReturn = {
 };
 
 export interface Payload {
-  user_id: number;
+  #user_id: number;
   topic: string;
   prompt: string;
   max_tokens: number;
