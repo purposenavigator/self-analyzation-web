@@ -2,7 +2,7 @@
 import DynamicTextArea from '@/components/Coinversation/DynamicTextArea';
 import { InputProvider } from '@/components/Coinversation/InputProvider';
 import ScrollableComponent from '@/components/Coinversation/ScrollableComponent';
-import Header from '@/components/Header';
+import { Header } from '@/components/Header/Header';
 import StickyComponent from '@/components/StickyComponent';
 import useDynamicTextArea from '@/hooks/Conversaton/useDynamicTextArea';
 import useManageResponseBodies from '@/hooks/Conversaton/useManageResponseBodies';

@@ -1,5 +1,4 @@
 'use client';
-import Header from '@/components/Header';
 import useFetchAnalysis from '@/hooks/useFetchAnalyze';
 import useReceiveQuestionByRoute from '@/hooks/useReceiveQuestionByRoute';
 import React from 'react';
@@ -7,6 +6,7 @@ import { Card, CardHeader, CardContent, Tabs, Tab, Box } from '@mui/material';
 import AnalysisSummaryCard from '@/components/Analyze/AnalysisSummaryCard';
 import { ValueAnalysis } from '@/components/Analyze/ValueAnalysis';
 import { ValueRadar } from '@/components/Analyze/ValueRadar';
+import { Header } from '@/components/Header/Header';
 
 interface TabPanelProps {
   children?: React.ReactNode;
