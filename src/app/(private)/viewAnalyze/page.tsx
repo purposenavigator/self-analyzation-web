@@ -11,7 +11,7 @@ export default function ViewAnalyze() {
   const retrieved = useStoreConversations(data ?? []);
   return (
     <PathProvider path={'analyze'}>
-      <HeaderFooter title="Analyze Conversation">
+      <HeaderFooter>
         <Main conversations={retrieved} title={'Analyze Conversation'} />
       </HeaderFooter>
     </PathProvider>
