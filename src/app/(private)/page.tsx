@@ -1,6 +1,6 @@
+'use client';
 
 import React from 'react';
-import { Metadata } from 'next';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
@@ -9,13 +9,19 @@ import { RecentActivity } from '../../components/dashboard/recent-activity';
 import { DiscoveredValues } from '../../components/dashboard/discoveredValues'; // Import the DiscoveredValues component
 import { HowToUse } from '../../components/dashboard/howToUse'; // Import the HowToUse component
 import HeaderFooter from '@/components/HeaderFooter';
-
-export const metadata: Metadata = {
-  title: 'Dashboard',
-  description: 'A conversation analysis app to discover your values',
-};
+import { useFetchValues } from '@/hooks/Dashboard/useFetchValues';
 
 function DashboardPage() {
+  useFetchValues(); // Execute the useFetchValues hook
+
+  const values = [
+    { id: 1, name: 'Personal Growth', importance: 'high' },
+    { id: 2, name: 'Family', importance: 'high' },
+    { id: 3, name: 'Creativity', importance: 'medium' },
+    { id: 4, name: 'Health', importance: 'high' },
+    { id: 5, name: 'Social Contribution', importance: 'medium' },
+  ];
+
   return (
     <div className="flex-col md:flex">
       <div className="flex-1 space-y-4 p-8 pt-6">
@@ -25,7 +31,7 @@ function DashboardPage() {
           </Typography>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
-          <DiscoveredValues /> {/* Use the DiscoveredValues component */}
+          <DiscoveredValues values={values} /> {/* Pass values as prop */}
           <HowToUse /> {/* Use the HowToUse component */}
         </div>
         <div className="grid gap-4 md:grid-cols-2">

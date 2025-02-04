@@ -5,16 +5,17 @@ import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 
-export function DiscoveredValues() {
-  // This array would be fetched from an API or database in a real application
-  const values = [
-    { id: 1, name: 'Personal Growth', importance: 'high' },
-    { id: 2, name: 'Family', importance: 'high' },
-    { id: 3, name: 'Creativity', importance: 'medium' },
-    { id: 4, name: 'Health', importance: 'high' },
-    { id: 5, name: 'Social Contribution', importance: 'medium' },
-  ];
+interface Value {
+  id: number;
+  name: string;
+  importance: 'high' | 'medium' | 'low';
+}
 
+interface DiscoveredValuesProps {
+  values: Value[];
+}
+
+export function DiscoveredValues({ values }: DiscoveredValuesProps) {
   const importanceColor = {
     high: 'error',
     medium: 'warning',
