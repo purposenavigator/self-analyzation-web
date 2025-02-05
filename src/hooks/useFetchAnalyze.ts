@@ -1,8 +1,7 @@
 import { getData } from '@/lib/api';
-import { AttributeExplanation } from '@/types/Analyze';
+import { AnalyzeSummary, AttributeExplanation } from '@/types/Analyze';
 import { useEffect, useState } from 'react';
 import { ValueRadarType } from '@/types/ValueRadar';
-import { getAttributeAndExplanationObjectArray } from '@/lib/getAttributeAndExplanationObjectArray';
 
 const getSummary = (input: string) => {
   return input
@@ -37,15 +36,12 @@ const useFetchAnalysis = (id: string) => {
   useEffect(() => {
     if (!id) return;
     setLoading(true);
-    getData<string>(`/analyze/${id}`)
+    getData<AnalyzeSummary>(`/analyze/${id}`)
       .then((response) => {
-        const attributeExplanationArray =
-          getAttributeAndExplanationObjectArray(response);
-        setAttributeExplanations(attributeExplanationArray);
-        setSummary(getJoinedSummary(response));
-        setValueRadarData(
-          attributeExplanationArray.map(convertToValueRadarType),
-        );
+        const { analysis_summary_text, analyzed_values } = response;
+        setAttributeExplanations(analyzed_values);
+        setSummary(getJoinedSummary(analysis_summary_text));
+        setValueRadarData(analyzed_values.map(convertToValueRadarType));
         setLoading(false);
         return response;
       })
