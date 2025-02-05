@@ -4,15 +4,10 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
-
-interface Value {
-  id: number;
-  name: string;
-  importance: 'high' | 'medium' | 'low';
-}
+import { AttributeEvaluation } from '@/types/Analyze';
 
 interface DiscoveredValuesProps {
-  values: Value[];
+  values: AttributeEvaluation[];
 }
 
 export function DiscoveredValues({ values }: DiscoveredValuesProps) {
@@ -35,9 +30,9 @@ export function DiscoveredValues({ values }: DiscoveredValuesProps) {
         <div className="flex flex-wrap gap-2">
           {values.map((value) => (
             <Chip
-              key={value.id}
-              label={value.name}
-              color={importanceColor[value.importance]}
+              key={value.attribute}
+              label={value.attribute}
+              color={importanceColor[value.label]}
             />
           ))}
         </div>

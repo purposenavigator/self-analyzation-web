@@ -9,18 +9,10 @@ import { RecentActivity } from '../../components/dashboard/recent-activity';
 import { DiscoveredValues } from '../../components/dashboard/discoveredValues'; // Import the DiscoveredValues component
 import { HowToUse } from '../../components/dashboard/howToUse'; // Import the HowToUse component
 import HeaderFooter from '@/components/HeaderFooter';
-import { useFetchValues } from '@/hooks/Dashboard/useFetchValues';
+import { useFetchAttributeEvaluations } from '@/hooks/Dashboard/useFetchValues';
 
 function DashboardPage() {
-  useFetchValues(); // Execute the useFetchValues hook
-
-  const values = [
-    { id: 1, name: 'Personal Growth', importance: 'high' },
-    { id: 2, name: 'Family', importance: 'high' },
-    { id: 3, name: 'Creativity', importance: 'medium' },
-    { id: 4, name: 'Health', importance: 'high' },
-    { id: 5, name: 'Social Contribution', importance: 'medium' },
-  ];
+  const attributeEvaluations = useFetchAttributeEvaluations(); // Execute the useFetchAttributeEvaluations hook
 
   return (
     <div className="flex-col md:flex">
@@ -31,7 +23,8 @@ function DashboardPage() {
           </Typography>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
-          <DiscoveredValues values={values} /> {/* Pass values as prop */}
+          <DiscoveredValues values={attributeEvaluations} />
+          {/* Pass attributeEvaluations as prop */}
           <HowToUse /> {/* Use the HowToUse component */}
         </div>
         <div className="grid gap-4 md:grid-cols-2">

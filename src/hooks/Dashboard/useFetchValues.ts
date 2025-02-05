@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { postData } from '@/lib/api';
-import { getAttributeAndExplanationObjectArray } from '@/lib/getAttributeAndExplanationObjectArray';
-
-type FetchedValue = { [key: string]: string };
+import { AnalyzeSummary, AttributeEvaluation } from '@/types/Analyze';
 
 interface RequestOptions extends RequestInit {
   headers?: Record<string, string>;
@@ -12,34 +10,35 @@ const fetchAllValues = <T>(options: RequestOptions = {}): Promise<T> => {
   return postData<T>('/user_all_values', {}, options);
 };
 
-export const useFetchValues = () => {
-  const [valuesArray, setValuesArray] = useState<string[]>([]);
+export const useFetchAttributeEvaluations = () => {
+  const [attributeEvaluations, setAttributeEvaluations] = useState<
+    AttributeEvaluation[]
+  >([]);
 
   useEffect(() => {
-    const fetchValues = async () => {
+    const fetchAttributeEvaluations = async () => {
       try {
-        const values = await fetchAllValues<Array<FetchedValue>>();
-        if (Array.isArray(values)) {
-          const vals = values
-            .flatMap((value) => Object.values(value))
-            .flatMap((value) => getAttributeAndExplanationObjectArray(value))
-            .map((obj) => {
-              const { attribute, evaluation } = obj;
-              const { label, percentage } = evaluation;
-              return { attribute, label, percentage };
-            });
-          setValuesArray(vals);
-          console.log('Values Array:', vals);
+        const analyzeSummaries = await fetchAllValues<Array<AnalyzeSummary>>();
+        if (Array.isArray(analyzeSummaries)) {
+          const evaluations = analyzeSummaries.flatMap((summary) =>
+            summary.analyzed_values.map(({ attribute, evaluation }) => ({
+              attribute,
+              label: evaluation.label,
+              percentage: evaluation.percentage,
+            })),
+          );
+          setAttributeEvaluations(evaluations);
+          console.log('Attribute Evaluations:', evaluations);
         } else {
-          console.log('Fetched values are not an array:', values);
+          console.log('Fetched values are not an array:', analyzeSummaries);
         }
       } catch (error) {
-        console.error('Error fetching values:', error);
+        console.error('Error fetching attribute evaluations:', error);
       }
     };
 
-    fetchValues();
+    fetchAttributeEvaluations();
   }, []);
 
-  return valuesArray;
+  return attributeEvaluations;
 };

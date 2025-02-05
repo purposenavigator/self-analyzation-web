@@ -15,3 +15,9 @@ export interface AnalyzeSummary {
   analysis_summary_text: string;
   analyzed_values: AttributeExplanation[];
 }
+
+export interface AttributeEvaluation {
+  attribute: string;
+  label: string;
+  percentage: string;
+}
