@@ -8,10 +8,12 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
+import { useAuth } from '../../context/AuthContext'; // Import useAuth
 
 export function UserNav() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const { logout } = useAuth(); // Get logout function from AuthContext
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -62,7 +64,12 @@ export function UserNav() {
           <ListItemText primary="Settings" />
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
+        <MenuItem
+          onClick={() => {
+            handleClose();
+            logout(); // Call logout function
+          }}
+        >
           <ListItemText primary="Logout" />
         </MenuItem>
       </Menu>
