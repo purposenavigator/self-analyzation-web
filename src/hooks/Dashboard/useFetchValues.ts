@@ -20,13 +20,10 @@ export const useFetchAttributeEvaluations = () => {
       try {
         const analyzeSummaries = await fetchAllValues<Array<AnalyzeSummary>>();
         if (Array.isArray(analyzeSummaries)) {
-          const evaluations = analyzeSummaries.flatMap((summary) =>
-            summary.analyzed_values.map(({ attribute, evaluation }) => ({
-              attribute,
-              label: evaluation.label,
-              percentage: evaluation.percentage,
-            })),
-          );
+          const evaluations = analyzeSummaries.map(({ attribute, label }) => ({
+            attribute,
+            label,
+          }));
           setAttributeEvaluations(evaluations);
           console.log('Attribute Evaluations:', evaluations);
         } else {
