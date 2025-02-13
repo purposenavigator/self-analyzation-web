@@ -1,3 +1,5 @@
+import { AnalyzeSummary } from './Analyze';
+
 export type UseSubmitTextReturn = {
   submitText: (
     payload: Payload,
@@ -69,3 +71,26 @@ export type UserConversation = {
   status: 'active' | 'inactive'; // Assuming status can have these values
   title: string | null;
 };
+
+interface Message {
+  role: string;
+  content: string;
+}
+
+interface Conversation {
+  _id?: string; // ObjectId is usually represented as a string in TypeScript
+  user_id: string;
+  conversation_id: string;
+  topic: string;
+  summaries: Message[];
+  questions: Message[];
+  analyze: Message[]; // Renamed from 'analyzes' to 'analyze'
+  answers: Message[];
+  title?: string;
+  created_at: Date;
+  updated_at: Date;
+  status: string;
+  is_favorite: boolean;
+  deleted_at?: Date;
+  analysis_summaries: Record<string, AnalyzeSummary>;
+}

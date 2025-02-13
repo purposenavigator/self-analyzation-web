@@ -10,12 +10,9 @@ import { DiscoveredValues } from '../../components/dashboard/discoveredValues'; 
 import { HowToUse } from '../../components/dashboard/howToUse'; // Import the HowToUse component
 import HeaderFooter from '@/components/HeaderFooter';
 import { useFetchAttributeEvaluations } from '@/hooks/Dashboard/useFetchValues';
-import useGetAllUserConversations from '@/hooks/Conversations/useGetAllUserConversations';
 
 function DashboardPage() {
   const attributeEvaluations = useFetchAttributeEvaluations(); // Execute the useFetchAttributeEvaluations hook
-  const { data } = useGetAllUserConversations({ userId: '1' }, true);
-  console.log(data);
 
   return (
     <div className="flex-col md:flex">
