@@ -77,7 +77,7 @@ interface Message {
   content: string;
 }
 
-interface Conversation {
+export interface Conversation {
   _id?: string; // ObjectId is usually represented as a string in TypeScript
   user_id: string;
   conversation_id: string;

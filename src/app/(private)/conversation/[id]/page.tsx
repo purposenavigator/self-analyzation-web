@@ -4,17 +4,15 @@ import { InputProvider } from '@/components/Coinversation/InputProvider';
 import ScrollableComponent from '@/components/Coinversation/ScrollableComponent';
 import { Header } from '@/components/Header/Header';
 import StickyComponent from '@/components/StickyComponent';
+import { useGetConversationById } from '@/hooks/ContinueConversation/useGetConversationById';
 import useDynamicTextArea from '@/hooks/Conversaton/useDynamicTextArea';
 import useManageResponseBodies from '@/hooks/Conversaton/useManageResponseBodies';
 import { useSubmitText } from '@/hooks/Conversaton/useSubmitText';
 import useFetchQuestion from '@/hooks/useFethQuestion';
-import useReceiveQuestionByRoute, {
-  isConversation,
-} from '@/hooks/useReceiveQuestionByRoute';
-import { postData } from '@/lib/api';
-import { Payload, UserConversation } from '@/types/Conversation';
-import { Question, Conversation } from '@/types/Questions';
-import React, { useState, useCallback, useEffect } from 'react';
+import { Payload } from '@/types/Conversation';
+import React, { useState, useEffect } from 'react';
+import useDestructParams from '@/hooks/ContinueConversation/useDestructParams';
+import useReceiveQuestionByRoute from '@/hooks/useReceiveQuestionByRoute';
 
 const MAX_TOKENS = 150; // Constant value for max_tokens
 
@@ -35,49 +33,6 @@ function createPayload(
 
   return payload;
 }
-
-const useDestructParams = (params: Question | Conversation | undefined) => {
-  if (!isConversation(params))
-    return {
-      title: '',
-      explanation: '',
-      question_title: '',
-      conversation_id: '',
-    };
-  const { title, explanation, question_title, conversation_id } = params;
-  return { title, explanation, question_title, conversation_id };
-};
-
-const useGetConversationById = (conversationId: string) => {
-  const [data, setData] = useState<UserConversation | null>(null);
-  const [error, setError] = useState<Error | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const getConversations = useCallback(async (id: string) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const responseData = await postData<UserConversation>(
-        '/get_conversation',
-        {
-          conversation_id: id,
-          user_id: 1,
-        },
-      );
-      setData(responseData);
-    } catch (error) {
-      setError(error as Error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (conversationId) getConversations(conversationId);
-  }, [conversationId, getConversations]);
-
-  return { data, error, loading };
-};
 
 const useSetConversationId = (conversation_id: string | undefined) => {
   const [conversationId, setConversationId] = useState<string | undefined>(
