@@ -18,7 +18,7 @@ export interface AnalyzeSummary {
 
 export interface AttributeEvaluation {
   attribute: string;
-  label: string;
+  label: Label;
 }
 
 export interface LabeledAttribute {
@@ -27,5 +27,5 @@ export interface LabeledAttribute {
   mean: number;
   count: number;
   relevance_score: number;
-  label: string;
+  label: Label;
 }

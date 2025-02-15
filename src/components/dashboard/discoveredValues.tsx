@@ -4,17 +4,21 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
-import { AttributeEvaluation } from '@/types/Analyze';
+import { AttributeEvaluation, Label } from '@/types/Analyze';
 
 interface DiscoveredValuesProps {
   values: AttributeEvaluation[];
 }
 
+type ChipColor = 'error' | 'warning' | 'success';
+type ChipColorObject = { color: ChipColor; name: string };
+type ChipColorMap = Record<Label, ChipColorObject>;
+
 export function DiscoveredValues({ values }: DiscoveredValuesProps) {
-  const importanceColor = {
-    high: 'error',
-    medium: 'warning',
-    low: 'success',
+  const chipColor: ChipColorMap = {
+    high: { color: 'error', name: 'High' },
+    medium: { color: 'warning', name: 'Medium' },
+    low: { color: 'success', name: 'Low' },
   };
 
   return (
@@ -31,8 +35,8 @@ export function DiscoveredValues({ values }: DiscoveredValuesProps) {
           {values.map((value) => (
             <Chip
               key={value.attribute}
-              label={value.attribute}
-              color={importanceColor[value.label]}
+              label={`${value.attribute} (${chipColor[value.label].name})`}
+              color={chipColor[value.label].color}
             />
           ))}
         </div>
