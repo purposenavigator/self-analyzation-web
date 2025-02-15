@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { postData } from '@/lib/api';
-import { AttributeEvaluation, LabeledAttribute } from '@/types/Analyze';
+import { AttributeEvaluation, LabeledAttribute } from '@/types/Dashboard';
 
 interface RequestOptions extends RequestInit {
   headers?: Record<string, string>;

@@ -4,15 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
-import { AttributeEvaluation, Label } from '@/types/Analyze';
-
-interface DiscoveredValuesProps {
-  values: AttributeEvaluation[];
-}
-
-type ChipColor = 'error' | 'warning' | 'success';
-type ChipColorObject = { color: ChipColor; name: string };
-type ChipColorMap = Record<Label, ChipColorObject>;
+import { ChipColorMap, DiscoveredValuesProps } from '@/types/Dashboard';
 
 export function DiscoveredValues({ values }: DiscoveredValuesProps) {
   const chipColor: ChipColorMap = {
