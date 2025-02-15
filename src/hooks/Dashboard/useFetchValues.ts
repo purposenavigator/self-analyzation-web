@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { postData } from '@/lib/api';
-import { AnalyzeSummary, AttributeEvaluation } from '@/types/Analyze';
+import { AttributeEvaluation, LabeledAttribute } from '@/types/Analyze';
 
 interface RequestOptions extends RequestInit {
   headers?: Record<string, string>;
@@ -18,7 +18,8 @@ export const useFetchAttributeEvaluations = () => {
   useEffect(() => {
     const fetchAttributeEvaluations = async () => {
       try {
-        const analyzeSummaries = await fetchAllValues<Array<AnalyzeSummary>>();
+        const analyzeSummaries =
+          await fetchAllValues<Array<LabeledAttribute>>();
         if (Array.isArray(analyzeSummaries)) {
           const evaluations = analyzeSummaries.map(({ attribute, label }) => ({
             attribute,

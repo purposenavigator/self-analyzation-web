@@ -19,5 +19,13 @@ export interface AnalyzeSummary {
 export interface AttributeEvaluation {
   attribute: string;
   label: string;
-  percentage: string;
+}
+
+export interface LabeledAttribute {
+  attribute: string;
+  explanation: string;
+  mean: number;
+  count: number;
+  relevance_score: number;
+  label: string;
 }
