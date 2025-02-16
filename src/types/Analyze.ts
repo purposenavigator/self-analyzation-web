@@ -1,4 +1,4 @@
-export type Label = 'high' | 'medium' | 'low';
+import { Label } from './Label';
 
 export interface Evaluation {
   label: Label;
