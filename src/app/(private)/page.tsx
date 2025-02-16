@@ -10,9 +10,11 @@ import { DiscoveredValues } from '../../components/dashboard/discoveredValues'; 
 import { HowToUse } from '../../components/dashboard/howToUse'; // Import the HowToUse component
 import HeaderFooter from '@/components/HeaderFooter';
 import { useFetchAttributeEvaluations } from '@/hooks/Dashboard/useFetchValues';
+import { useFetchActivities } from '../../hooks/Dashboard/useFetchActivities'; // Update the import path
 
 function DashboardPage() {
   const attributeEvaluations = useFetchAttributeEvaluations(); // Execute the useFetchAttributeEvaluations hook
+  const activities = useFetchActivities(); // Execute the useFetchActivities hook
 
   return (
     <div className="flex-col md:flex">
@@ -34,7 +36,7 @@ function DashboardPage() {
               subheader="Your recent conversations and discoveries"
             />
             <CardContent>
-              <RecentActivity />
+              <RecentActivity activities={activities} />
             </CardContent>
           </Card>
         </div>
