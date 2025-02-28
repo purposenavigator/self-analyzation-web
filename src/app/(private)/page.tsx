@@ -11,6 +11,7 @@ import { HowToUse } from '../../components/dashboard/howToUse'; // Import the Ho
 import HeaderFooter from '@/components/HeaderFooter';
 import { useFetchAttributeEvaluations } from '@/hooks/Dashboard/useFetchValues';
 import { useFetchActivities } from '../../hooks/Dashboard/useFetchActivities'; // Update the import path
+import { PathProvider } from '../../components/PathProvider'; // Import PathProvider
 
 function DashboardPage() {
   const attributeEvaluations = useFetchAttributeEvaluations(); // Execute the useFetchAttributeEvaluations hook
@@ -48,7 +49,9 @@ function DashboardPage() {
 const MainPage = () => {
   return (
     <HeaderFooter>
-      <DashboardPage />
+      <PathProvider path="/conversation">
+        <DashboardPage />
+      </PathProvider>
     </HeaderFooter>
   );
 };

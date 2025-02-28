@@ -51,6 +51,7 @@ function ConversationPage() {
   const [inputValue, setInputValue] = useState<string>('');
   const textareaRef = useDynamicTextArea({ value: inputValue });
   const { submitText, loading, error } = useSubmitText();
+  console.log(params, 'params');
   const { title, question_title, conversation_id } = useDestructParams(params);
   const { conversationId } = useSetConversationId(conversation_id);
   const {

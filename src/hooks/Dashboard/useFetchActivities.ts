@@ -15,7 +15,7 @@ export function useFetchActivities() {
         );
         const mappedActivities: Activity[] = conversations.map(
           (conversation) => ({
-            id: conversation.conversation_id,
+            id: conversation._id,
             type: conversation.topic,
             title: conversation.title || 'No Title',
             time: 'dummy time', // Dummy string for time
