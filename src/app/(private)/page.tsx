@@ -1,6 +1,6 @@
+'use client';
 
 import React from 'react';
-import { Metadata } from 'next';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
@@ -9,13 +9,14 @@ import { RecentActivity } from '../../components/dashboard/recent-activity';
 import { DiscoveredValues } from '../../components/dashboard/discoveredValues'; // Import the DiscoveredValues component
 import { HowToUse } from '../../components/dashboard/howToUse'; // Import the HowToUse component
 import HeaderFooter from '@/components/HeaderFooter';
-
-export const metadata: Metadata = {
-  title: 'Dashboard',
-  description: 'A conversation analysis app to discover your values',
-};
+import { useFetchAttributeEvaluations } from '@/hooks/Dashboard/useFetchValues';
+import { useFetchActivities } from '../../hooks/Dashboard/useFetchActivities'; // Update the import path
+import { PathProvider } from '../../components/PathProvider'; // Import PathProvider
 
 function DashboardPage() {
+  const attributeEvaluations = useFetchAttributeEvaluations(); // Execute the useFetchAttributeEvaluations hook
+  const activities = useFetchActivities(); // Execute the useFetchActivities hook
+
   return (
     <div className="flex-col md:flex">
       <div className="flex-1 space-y-4 p-8 pt-6">
@@ -25,7 +26,8 @@ function DashboardPage() {
           </Typography>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
-          <DiscoveredValues /> {/* Use the DiscoveredValues component */}
+          <DiscoveredValues values={attributeEvaluations} />
+          {/* Pass attributeEvaluations as prop */}
           <HowToUse /> {/* Use the HowToUse component */}
         </div>
         <div className="grid gap-4 md:grid-cols-2">
@@ -35,7 +37,7 @@ function DashboardPage() {
               subheader="Your recent conversations and discoveries"
             />
             <CardContent>
-              <RecentActivity />
+              <RecentActivity activities={activities} />
             </CardContent>
           </Card>
         </div>
@@ -47,7 +49,9 @@ function DashboardPage() {
 const MainPage = () => {
   return (
     <HeaderFooter>
-      <DashboardPage />
+      <PathProvider path="/conversation">
+        <DashboardPage />
+      </PathProvider>
     </HeaderFooter>
   );
 };

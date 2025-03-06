@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { ResponseBody, UserConversation } from '@/types/Conversation';
+import { ResponseBody, Conversation } from '@/types/Conversation';
 
 const convertUserConversationToResponseBodies = (
-  data?: UserConversation | null,
+  data?: Conversation | null,
 ): ResponseBody[] => {
   if (!data) return [];
   const summaries = data.summaries.filter(({ role }) => role !== 'system');
@@ -34,7 +34,7 @@ const convertUserConversationToResponseBodies = (
   return responseBodies;
 };
 
-const useManageResponseBodies = (data?: UserConversation | null) => {
+const useManageResponseBodies = (data?: Conversation | null) => {
   const [responseBodies, setResponseBodies] = useState<ResponseBody[]>(
     convertUserConversationToResponseBodies(data),
   );

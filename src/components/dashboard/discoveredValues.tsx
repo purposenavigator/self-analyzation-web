@@ -4,21 +4,13 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
+import { ChipColorMap, DiscoveredValuesProps } from '@/types/Dashboard';
 
-export function DiscoveredValues() {
-  // This array would be fetched from an API or database in a real application
-  const values = [
-    { id: 1, name: 'Personal Growth', importance: 'high' },
-    { id: 2, name: 'Family', importance: 'high' },
-    { id: 3, name: 'Creativity', importance: 'medium' },
-    { id: 4, name: 'Health', importance: 'high' },
-    { id: 5, name: 'Social Contribution', importance: 'medium' },
-  ];
-
-  const importanceColor = {
-    high: 'error',
-    medium: 'warning',
-    low: 'success',
+export function DiscoveredValues({ values }: DiscoveredValuesProps) {
+  const chipColor: ChipColorMap = {
+    high: { color: 'error', name: 'High' },
+    medium: { color: 'warning', name: 'Medium' },
+    low: { color: 'success', name: 'Low' },
   };
 
   return (
@@ -34,9 +26,9 @@ export function DiscoveredValues() {
         <div className="flex flex-wrap gap-2">
           {values.map((value) => (
             <Chip
-              key={value.id}
-              label={value.name}
-              color={importanceColor[value.importance]}
+              key={value.attribute}
+              label={`${value.attribute} (${chipColor[value.label].name})`}
+              color={chipColor[value.label].color}
             />
           ))}
         </div>

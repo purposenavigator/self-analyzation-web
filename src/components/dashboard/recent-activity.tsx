@@ -5,32 +5,13 @@ import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
+import { Activity } from '../../types/Activity'; // Import the Activity type
 
-export function RecentActivity() {
-  const activities = [
-    {
-      id: 1,
-      type: 'Conversation',
-      title: 'Discussion about career',
-      time: '2 hours ago',
-      description: 'Discovered new values related to personal growth',
-    },
-    {
-      id: 2,
-      type: 'Analysis',
-      title: 'Deep dive into values',
-      time: '5 hours ago',
-      description: 'Gained a deeper understanding of work-life balance',
-    },
-    {
-      id: 3,
-      type: 'Conversation',
-      title: 'About relationships',
-      time: '1 day ago',
-      description: 'Gained new insights into the importance of trust',
-    },
-  ];
+interface RecentActivityProps {
+  activities: Activity[];
+}
 
+export function RecentActivity({ activities }: RecentActivityProps) {
   return (
     <List>
       {activities.map((activity) => (
